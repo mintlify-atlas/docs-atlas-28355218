@@ -15,7 +15,7 @@ The `CustomSpellImpacts` class manages registration of all custom spell impact h
 
 ```java
 net.elemental_wizards_rpg.spell.CustomSpellImpacts
-```
+```java
 
 ### Methods
 
@@ -23,7 +23,7 @@ net.elemental_wizards_rpg.spell.CustomSpellImpacts
 
 ```java
 public static void registerCustomImpacts()
-```
+```java
 
 Registers all custom spell impact handlers. This should be called during mod initialization.
 
@@ -33,7 +33,7 @@ SpellHandlers.registerCustomImpact(
         Identifier.of(MOD_ID, "avatar_impact"),
         new AvatarImpact()
 );
-```
+```java
 
 **Usage Example:**
 ```java
@@ -45,7 +45,7 @@ public class YourMod {
         CustomSpellImpacts.registerCustomImpacts();
     }
 }
-```
+```java
 
 ## Creating Custom Impact Handlers
 
@@ -55,7 +55,7 @@ Custom impact handlers must implement the `SpellHandlers.CustomImpact` interface
 
 ```java
 net.spell_engine.api.spell.event.SpellHandlers.CustomImpact
-```
+```java
 
 ### Required Method
 
@@ -67,7 +67,7 @@ SpellHandlers.ImpactResult onSpellImpact(
     Entity target,
     SpellHelper.ImpactContext context
 )
-```
+```java
 
 **Parameters:**
 - `spell` - The spell registry entry being cast
@@ -87,7 +87,7 @@ The `AvatarImpact` class demonstrates a complex custom impact that triggers diff
 
 ```java
 net.elemental_wizards_rpg.spell.custom_spell_impacts.AvatarImpact
-```
+```java
 
 ### Implementation Overview
 
@@ -140,7 +140,7 @@ public class AvatarImpact implements SpellHandlers.CustomImpact {
         return new SpellHandlers.ImpactResult(true, false);
     }
 }
-```
+```java
 
 ## Spell Helper Methods
 
@@ -162,7 +162,7 @@ SpellHelper.performImpacts(
         .power(powerResult)
         .position(target.getPos())
 );
-```
+```java
 
 ### fallProjectile()
 
@@ -179,7 +179,7 @@ SpellHelper.fallProjectile(
         .power(powerResult)
         .position(caster.getPos())
 );
-```
+```java
 
 ### placeCloud()
 
@@ -194,7 +194,7 @@ SpellHelper.placeCloud(
     spellEntry,
     context
 );
-```
+```java
 
 ### shootProjectile() (Commented Example)
 
@@ -210,7 +210,7 @@ SpellHelper.shootProjectile(
         .power(powerResult)
         .position(caster.getPos())
 );
-```
+```java
 
 ## Registering Your Custom Impact
 
@@ -249,7 +249,7 @@ public class YourCustomImpact implements SpellHandlers.CustomImpact {
         return new SpellHandlers.ImpactResult(true, false);
     }
 }
-```
+```java
 
 2. **Register the impact:**
 
@@ -265,7 +265,7 @@ public class YourCustomImpacts {
         );
     }
 }
-```
+```java
 
 3. **Call registration in your mod initializer:**
 
@@ -276,7 +276,7 @@ public class YourMod implements ModInitializer {
         YourCustomImpacts.registerCustomImpacts();
     }
 }
-```
+```java
 
 ## Using Custom Impacts in Spell JSON
 
@@ -291,7 +291,7 @@ Reference your custom impact in spell JSON files:
     }
   ]
 }
-```
+```java
 
 ## Dependencies
 

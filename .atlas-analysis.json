@@ -87,7 +87,7 @@
   },
   "keyFeatures": [
     "Three elemental magic schools: Water, Earth, and Air",
-    "16 unique elemental spells with custom effects and animations",
+    "18 unique elemental spells with custom effects and animations",
     "Tiered armor sets with elemental-specific bonuses",
     "Elemental staffs and wands with spell power attributes",
     "Custom status effects like Stone Flesh, Tornado, and Bubble Foam",
@@ -109,10 +109,18 @@
     "Armors.kelpArmor",
     "Armors.dripstoneArmor",
     "Armors.windArmor",
+    "Armors.netheriteKelpNetheriteArmor",
+    "Armors.netheriteDripstoneArmor",
+    "Armors.netheriteWindArmor",
+    "Armors.hurricaneArmorSet",
+    "Armors.mountainArmorSet",
+    "Armors.oceanArmorSet",
     "WeaponsRegister.register()",
     "CustomSpellImpacts.registerCustomImpacts()",
     "TornadoEntity",
     "DripstoneBigEntity",
-    "DripstoneSmallEntity"
+    "DripstoneSmallEntity",
+    "ElementalItems.ELEMENTAL_ESSENCE",
+    "ElementalGroup.ELEMENTAL_WIZARD_KEY"
   ]
 }

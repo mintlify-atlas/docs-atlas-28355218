@@ -15,7 +15,7 @@ The `WizardsCompat` class manages built-in resource pack registration for compat
 
 ```java
 net.elemental_wizards_rpg.compat.WizardsCompat
-```
+```java
 
 ### Methods
 
@@ -23,7 +23,7 @@ net.elemental_wizards_rpg.compat.WizardsCompat
 
 ```java
 public static void registerCompat()
-```
+```java
 
 Registers the built-in "wizard_changes" resource pack as an always-enabled resource pack.
 
@@ -36,7 +36,7 @@ FabricLoader.getInstance().getModContainer(MOD_ID).ifPresent(modContainer -> {
             ResourcePackActivationType.ALWAYS_ENABLED
     );
 });
-```
+```java
 
 **Usage Example:**
 ```java
@@ -48,7 +48,7 @@ public class YourMod {
         WizardsCompat.registerCompat();
     }
 }
-```
+```java
 
 ## CompatLoadingCheck
 
@@ -58,7 +58,7 @@ The `CompatLoadingCheck` class provides utilities for detecting the presence of 
 
 ```java
 net.elemental_wizards_rpg.compat.CompatLoadingCheck
-```
+```java
 
 ### Methods
 
@@ -66,7 +66,7 @@ net.elemental_wizards_rpg.compat.CompatLoadingCheck
 
 ```java
 public static boolean armoryLoadCheck()
-```
+```java
 
 Checks if the Armory RPG mod is loaded or if running in a development environment.
 
@@ -78,7 +78,7 @@ Checks if the Armory RPG mod is loaded or if running in a development environmen
 ```java
 return FabricLoader.getInstance().isModLoaded("armory_rpgs") 
     | FabricLoader.getInstance().isDevelopmentEnvironment();
-```
+```java
 
 **Usage Example:**
 ```java
@@ -88,7 +88,7 @@ if (armoryLoadCheck()) {
     // Enable armory-specific features
     System.out.println("Armory RPG detected, enabling compatibility features");
 }
-```
+```java
 
 ## Armory Integration
 
@@ -110,7 +110,7 @@ if (armoryLoadCheck()) {
         );
     });
 }
-```
+```java
 
 ### Conditional Feature Loading
 
@@ -129,7 +129,7 @@ public class Armors {
         }
     }
 }
-```
+```java
 
 **In Client Initialization:**
 ```java
@@ -142,7 +142,7 @@ public class ElementalClient {
         }
     }
 }
-```
+```java
 
 ## Creating Custom Compatibility Checks
 
@@ -165,7 +165,7 @@ public class CompatLoadingCheck {
             | FabricLoader.getInstance().isDevelopmentEnvironment();
     }
 }
-```
+```java
 
 ## Dependencies
 

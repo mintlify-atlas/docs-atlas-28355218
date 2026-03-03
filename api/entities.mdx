@@ -25,7 +25,7 @@ public class TornadoEntity extends SpellCloud {
         super(entityType, world);
     }
 }
-```
+```java
 
 ### Description
 
@@ -37,7 +37,7 @@ The `TornadoEntity` represents a tornado spell cloud effect. It inherits all sta
 
 ```java
 public static EntityType<TornadoEntity> ENTITY_TYPE;
-```
+```java
 
 Static reference to the registered entity type for tornado entities.
 
@@ -45,7 +45,7 @@ Static reference to the registered entity type for tornado entities.
 
 ```java
 public TornadoEntity(EntityType<? extends SpellCloud> entityType, World world)
-```
+```java
 
 **Parameters:**
 - `entityType` - The entity type for this tornado entity
@@ -58,7 +58,7 @@ public TornadoEntity(EntityType<? extends SpellCloud> entityType, World world)
 TornadoEntity tornado = new TornadoEntity(TornadoEntity.ENTITY_TYPE, world);
 tornado.setPosition(x, y, z);
 world.spawnEntity(tornado);
-```
+```java
 
 ### Inherited Behavior
 
@@ -88,7 +88,7 @@ public class DripstoneBigEntity extends SpellCloud {
         return this.isAlive();
     }
 }
-```
+```java
 
 ### Description
 
@@ -100,7 +100,7 @@ The `DripstoneBigEntity` represents a large dripstone spell cloud effect. Unlike
 
 ```java
 public static EntityType<DripstoneBigEntity> ENTITY_TYPE;
-```
+```java
 
 Static reference to the registered entity type for big dripstone entities.
 
@@ -108,7 +108,7 @@ Static reference to the registered entity type for big dripstone entities.
 
 ```java
 public DripstoneBigEntity(EntityType<? extends SpellCloud> entityType, World world)
-```
+```java
 
 **Parameters:**
 - `entityType` - The entity type for this dripstone entity
@@ -121,7 +121,7 @@ public DripstoneBigEntity(EntityType<? extends SpellCloud> entityType, World wor
 ```java
 @Override
 public boolean canBeHitByProjectile()
-```
+```java
 
 Determines whether the entity can be hit by projectiles.
 
@@ -144,7 +144,7 @@ world.spawnEntity(dripstone);
 if (dripstone.canBeHitByProjectile()) {
     // Entity can be destroyed by projectiles
 }
-```
+```java
 
 ## DripstoneSmallEntity
 
@@ -160,7 +160,7 @@ public class DripstoneSmallEntity extends SpellCloud {
         super(entityType, world);
     }
 }
-```
+```java
 
 ### Description
 
@@ -172,7 +172,7 @@ The `DripstoneSmallEntity` represents a small dripstone spell cloud effect. It b
 
 ```java
 public static EntityType<DripstoneSmallEntity> ENTITY_TYPE;
-```
+```java
 
 Static reference to the registered entity type for small dripstone entities.
 
@@ -180,7 +180,7 @@ Static reference to the registered entity type for small dripstone entities.
 
 ```java
 public DripstoneSmallEntity(EntityType<? extends SpellCloud> entityType, World world)
-```
+```java
 
 **Parameters:**
 - `entityType` - The entity type for this small dripstone entity
@@ -196,7 +196,7 @@ DripstoneSmallEntity smallDripstone = new DripstoneSmallEntity(
 );
 smallDripstone.setPosition(x, y, z);
 world.spawnEntity(smallDripstone);
-```
+```java
 
 ### Inherited Behavior
 
@@ -224,7 +224,7 @@ public void castTornadoSpell(World world, Vec3d position) {
     tornado.setPosition(position.x, position.y, position.z);
     world.spawnEntity(tornado);
 }
-```
+```java
 
 ### Creating a Projectile-Destructible Spell Effect
 
@@ -239,7 +239,7 @@ public void createDripstone(World world, BlockPos pos) {
     // Entity can now be destroyed by arrows
     world.spawnEntity(dripstone);
 }
-```
+```java
 
 ### Spawning Multiple Small Effects
 
@@ -264,7 +264,7 @@ public void createDripstoneRain(World world, Vec3d center, int count) {
         world.spawnEntity(small);
     }
 }
-```
+```java
 
 ## Integration with Spell Engine
 
@@ -289,4 +289,4 @@ TornadoEntity.ENTITY_TYPE = Registry.register(
         .dimensions(EntityDimensions.fixed(1.0f, 1.0f))
         .build()
 );
-```
+```java

@@ -60,7 +60,7 @@ The mod uses three configuration managers to handle different aspects of configu
 
 ```java
 public static void init()
-```
+```java
 
 Initializes the mod by loading configurations and registering custom spell impacts and compatibility modules.
 
@@ -74,13 +74,13 @@ Initializes the mod by loading configurations and registering custom spell impac
 ```java
 // Called from mod initializer
 ElementalMod.init();
-```
+```java
 
 ### registerItems()
 
 ```java
 public static void registerItems()
-```
+```java
 
 Registers all mod items, item groups, weapons, and armor sets.
 
@@ -100,13 +100,13 @@ The mod creates a creative tab with ID `elemental_wizards_rpg.general` using the
 ```java
 // Called after init()
 ElementalMod.registerItems();
-```
+```java
 
 ### registerEffects()
 
 ```java
 public static void registerEffects()
-```
+```java
 
 Registers all status effects defined in the `Effects` class.
 
@@ -116,13 +116,13 @@ Delegates to `Effects.register()` to register all effect entries.
 **Example:**
 ```java
 ElementalMod.registerEffects();
-```
+```java
 
 ### registerEntities()
 
 ```java
 public static void registerEntities()
-```
+```java
 
 Registers custom entity types for spell effects and projectiles.
 
@@ -168,7 +168,7 @@ ElementalMod.registerEntities();
 
 // Access registered entity type
 EntityType<DripstoneBigEntity> dripstoneType = DripstoneBigEntity.ENTITY_TYPE;
-```
+```java
 
 ## Initialization Order
 

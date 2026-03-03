@@ -28,7 +28,7 @@ public static RegistryEntry<ArmorMaterial> material(
     RegistryEntry<SoundEvent> equipSound, 
     Supplier<Ingredient> repairIngredient
 )
-```
+```java
 
 **Parameters:**
 - `name` - Identifier name for the armor material
@@ -51,7 +51,7 @@ public static RegistryEntry<ArmorMaterial> material_elemental = material(
     SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 
     WOOL_INGREDIENTS
 );
-```
+```java
 
 #### register()
 
@@ -59,7 +59,7 @@ Registers all armor sets with their configurations.
 
 ```java
 public static void register(Map<String, ArmorSetConfig> configs)
-```
+```java
 
 **Parameters:**
 - `configs` - Map of armor set configurations
@@ -114,7 +114,7 @@ public static final Armor.Set elementalArmor = create(
         // ... other pieces
     ), 1, null
 ).armorSet();
-```
+```java
 
 ### Kelp Armor (Tier 2)
 
@@ -193,7 +193,7 @@ private static final float spell_power_t1 = 0.2F;  // 20%
 private static final float spell_power_t2 = 0.25F; // 25%
 private static final float spell_power_t3 = 0.3F;  // 30%
 private static final float spell_power_t5 = 0.35F; // 35%
-```
+```java
 
 ## Creating Custom Armor Sets
 
@@ -223,4 +223,4 @@ public static final Armor.Set customArmor = create(
     2,  // tier
     null
 ).armorSet();
-```
+```java

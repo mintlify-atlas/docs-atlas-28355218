@@ -451,9 +451,9 @@ Spell books grant access to school-specific spells. They are created and registe
 
 Your total spell power for a school is calculated by combining all bonuses:
 
-```
+```java
 Total Spell Power = Base + Weapon Bonus + Armor Bonuses
-```
+```java
 
 ### Example Build: Water Wizard
 
@@ -533,7 +533,7 @@ Epic tier armor sets (Ocean, Mountain, Hurricane) have unique passive effects:
 public static Identifier hurricane_passive = Identifier.of(MOD_ID, "hurricane");
 public static Identifier mountain_passive = Identifier.of(MOD_ID, "mountain");
 public static Identifier ocean_passive = Identifier.of(MOD_ID, "ocean");
-```
+```java
 
 <Warning>
   The specific effects of these passives are configured separately. Check your mod's config files for details.
@@ -547,7 +547,7 @@ All armor pieces use standardized settings (from `Armors.java:138-140`):
 itemSettings
   .component(SpellDataComponents.EQUIPMENT_SET, equipmentSetId)
   .component(DataComponentTypes.RARITY, Rarity.RARE);
-```
+```java
 
 All wizard equipment is marked as **Rare** quality.
 
@@ -558,7 +558,7 @@ A special crafting material used in various recipes:
 ```java
 // From ElementalItems.java:34
 public static final Item ELEMENTAL_ESSENCE = registerItem("elemental_essence", new Item(...));
-```
+```java
 
 Registry ID: `elemental_wizards_rpg:elemental_essence`
 

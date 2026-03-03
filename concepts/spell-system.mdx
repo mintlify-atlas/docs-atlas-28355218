@@ -31,9 +31,9 @@ Spells in Elemental Wizards follow a structured lifecycle:
 
 Every spell has a **spell power coefficient** that determines its effectiveness. Your actual damage or healing is calculated as:
 
-```
+```java
 Final Value = Base Spell Power × Spell Power Coefficient
-```
+```java
 
 ### Example Spell Power Coefficients
 
@@ -47,7 +47,7 @@ Final Value = Base Spell Power × Spell Power Coefficient
     }
   }
 }
-```
+```java
 
 ```json Aqua Splash (Damage)
 {
@@ -58,7 +58,7 @@ Final Value = Base Spell Power × Spell Power Coefficient
     }
   }
 }
-```
+```java
 
 ```json Hydro Beam
 {
@@ -69,7 +69,7 @@ Final Value = Base Spell Power × Spell Power Coefficient
     }
   }
 }
-```
+```java
 </CodeGroup>
 
 <Info>
@@ -103,7 +103,7 @@ From the spell JSON files:
     }
   }
 }
-```
+```java
 
 ```json Tier 4 (Ultimate)
 {
@@ -120,7 +120,7 @@ From the spell JSON files:
     }
   }
 }
-```
+```java
 </CodeGroup>
 
 ## Cooldowns
@@ -163,7 +163,7 @@ Higher-tier spells have cooldowns to balance their power:
   "duration": 30,
   "proportional": true
 }
-```
+```java
 
 <Tip>
   Water armor sets provide Haste bonuses, significantly reducing cooldowns for all schools.
@@ -189,7 +189,7 @@ Some powerful spells also apply **exhaust** (hunger):
   "cooldown": { ... },
   "item": { ... }
 }
-```
+```java
 
 <Warning>
   Keep food in your inventory when using high-tier spells with exhaust costs!
@@ -211,7 +211,7 @@ Most basic spells use aim targeting:
     "use_caster_as_fallback": false
   }
 }
-```
+```java
 
 - **required: true** - Must have a valid target
 - **use_caster_as_fallback** - Self-cast if no target (used in Aqua Splash for healing)
@@ -229,7 +229,7 @@ Channeled beam spells like Hydro Beam:
     "flow": 2.0
   }
 }
-```
+```java
 
 ### CLOUD Targeting
 
@@ -250,7 +250,7 @@ Area-of-effect spells like Tornado:
     "time_to_live_seconds": 10
   }]
 }
-```
+```java
 
 ## Cast Times and Animations
 
@@ -262,14 +262,14 @@ Each spell has a unique cast time and animation:
   "duration": 1,
   "animation": "spell_engine:one_handed_projectile_charge"
 }
-```
+```java
 
 ```json Medium Cast (1.2s)
 "cast": {
   "duration": 1.2,
   "animation": "more_rpg_classes:two_handed_ground_channeling"
 }
-```
+```java
 
 ```json Long Channel (5s)
 "cast": {
@@ -277,7 +277,7 @@ Each spell has a unique cast time and animation:
   "animation": "spell_engine:two_handed_channeling",
   "channel_ticks": 4
 }
-```
+```java
 </CodeGroup>
 
 ### Available Animations
@@ -310,7 +310,7 @@ Many spells use projectiles to deliver their effects:
     }
   }
 }
-```
+```java
 
 ### Projectile Models
 
@@ -343,7 +343,7 @@ Spells can have multiple impacts on the same target:
     }
   }
 ]
-```
+```java
 
 <Info>
   Each impact can have its own particles, sounds, and target conditions.
@@ -362,7 +362,7 @@ Some spells affect an area around the impact point:
   "particles": [...],
   "sound": {...}
 }
-```
+```java
 
 - **radius** - Affects all entities within this distance
 - **distance_dropoff** - Whether damage decreases with distance
@@ -376,7 +376,7 @@ Tier 4 spells can be crafted into scrolls for single-use casting:
   "scroll": {},
   "cast": { ... }
 }
-```
+```java
 
 <Tip>
   Create spell scrolls to use powerful spells without consuming your regular resources!

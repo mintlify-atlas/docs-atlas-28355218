@@ -21,7 +21,7 @@ public record Entry(
     String description,
     @Nullable SpellTooltip.DescriptionMutator mutator
 )
-```
+```java
 
 <ParamField path="id" type="Identifier">
   Unique identifier for the spell (e.g., `elemental_wizards_rpg:terra_drip_circle`)
@@ -55,7 +55,7 @@ public record Entry(
 
 ```java
 private static Spell.Impact damageImpact(float coefficient, float knockback)
-```
+```java
 
 Creates a damage impact with spell power scaling.
 
@@ -70,13 +70,13 @@ Creates a damage impact with spell power scaling.
 **Example:**
 ```java
 var damage = damageImpact(0.65F, 0F); // 65% spell power, no knockback
-```
+```java
 
 ### configureCooldown()
 
 ```java
 private static void configureCooldown(Spell spell, float duration)
-```
+```java
 
 Configures spell cooldown duration.
 
@@ -91,13 +91,13 @@ Configures spell cooldown duration.
 **Example:**
 ```java
 configureCooldown(spell, 22); // 22 second cooldown
-```
+```java
 
 ### createEffectImpact()
 
 ```java
 private static Spell.Impact createEffectImpact(Identifier effectId, float duration)
-```
+```java
 
 Creates a status effect impact.
 
@@ -112,13 +112,13 @@ Creates a status effect impact.
 **Example:**
 ```java
 var debuff = createEffectImpact(Identifier.of("minecraft:levitation"), 2);
-```
+```java
 
 ### createHeal()
 
 ```java
 private static Spell.Impact createHeal(float coefficient)
-```
+```java
 
 Creates a healing impact with spell power scaling.
 
@@ -129,13 +129,13 @@ Creates a healing impact with spell power scaling.
 **Example:**
 ```java
 var heal = createHeal(0.2F); // 20% spell power as healing
-```
+```java
 
 ### modifierSpellBase()
 
 ```java
 private static Spell modifierSpellBase()
-```
+```java
 
 Creates base configuration for modifier spells that enhance other spells.
 
@@ -149,7 +149,7 @@ Creates base configuration for modifier spells that enhance other spells.
 
 ```java
 private static Spell passiveSpellBase()
-```
+```java
 
 Creates base configuration for passive spells that trigger automatically.
 
@@ -162,7 +162,7 @@ Creates base configuration for passive spells that trigger automatically.
 
 ```java
 private static Spell.Impact.TargetModifier createImpactModifier(String entityType)
-```
+```java
 
 Creates a target modifier for conditional spell effects.
 
@@ -174,7 +174,7 @@ Creates a target modifier for conditional spell effects.
 
 ```java
 private static void bleedImmuneDeny(Spell.Impact impact)
-```
+```java
 
 Makes undead entities immune to the impact (typically for bleeding effects).
 
@@ -182,13 +182,13 @@ Makes undead entities immune to the impact (typically for bleeding effects).
 ```java
 var debuff = createEffectImpact(MRPGCEffects.BLEEDING.id, 4);
 bleedImmuneDeny(debuff); // Undead won't bleed
-```
+```java
 
 ### bossImmuneDeny()
 
 ```java
 private static void bossImmuneDeny(Spell.Impact impact)
-```
+```java
 
 Makes boss entities immune to the impact (for crowd control effects).
 
@@ -202,7 +202,7 @@ Modifier spells enhance other spells when learned. They use pattern matching to 
 
 ```java
 public static Entry improved_wind_updraft
-```
+```java
 
 **ID:** `elemental_wizards_rpg:improved_wind_updraft`
 
@@ -216,7 +216,7 @@ var modifier = new Spell.Modifier();
 modifier.spell_pattern = "elemental_wizards_rpg:wind_updraft";
 modifier.power_modifier = new Spell.Impact.Modifier();
 modifier.power_modifier.critical_chance_bonus = 0.05F;
-```
+```java
 
 #### improved_terra_drip_circle
 
@@ -230,7 +230,7 @@ modifier.power_modifier.critical_chance_bonus = 0.05F;
 ```java
 modifier.spell_pattern = "elemental_wizards_rpg:terra_drip_circle";
 modifier.spawn_duration_add = 2;
-```
+```java
 
 #### improved_aqua_springwater
 
@@ -265,7 +265,7 @@ trigger.impact = new Spell.Trigger.ImpactCondition();
 trigger.impact.impact_type = Spell.Impact.Action.Type.DAMAGE.toString();
 trigger.spell = new Spell.Trigger.SpellCondition();
 trigger.spell.type = Spell.Type.ACTIVE;
-```
+```java
 
 #### avatar_passives_air_draft
 
@@ -289,7 +289,7 @@ debuff.action.status_effect.amplifier_power_multiplier = 0.3F;
 spell.area_impact = new Spell.AreaImpact();
 spell.area_impact.radius = 5.0F;
 spell.area_impact.area.distance_dropoff = Spell.Target.Area.DropoffCurve.SQUARED;
-```
+```java
 
 #### avatar_passives_earth_stoning
 
@@ -314,7 +314,7 @@ meteor.launch_radius = 4;
 meteor.launch_properties.velocity = 0.8F;
 meteor.launch_properties.extra_launch_count = 12;
 meteor.launch_properties.extra_launch_delay = 4;
-```
+```java
 
 #### avatar_passives_water_undercurrent
 
@@ -339,7 +339,7 @@ cloud.time_to_live_seconds = 5;
 var damage = damageImpact(0.15F, 1.5F);
 var heal = createHeal(0.2F);
 spell.impacts = List.of(damage, heal);
-```
+```java
 
 ### Active Spells
 
@@ -379,7 +379,7 @@ SpellBuilder.Cost.item(spell, "more_rpg_classes:terra_stone", 1);
 var debuff = createEffectImpact(debuffEffect.id, 4);
 bleedImmuneDeny(debuff);
 debuff.action.status_effect.amplifier_power_multiplier = 0.2F;
-```
+```java
 
 #### terra_earthquake
 
@@ -414,7 +414,7 @@ spell.target.area.angle_degrees = 360;
 var custom = new Spell.Impact();
 bossImmuneDeny(custom);
 custom.action.custom.handler = "more_rpg_classes:trembling";
-```
+```java
 
 ## Constants
 

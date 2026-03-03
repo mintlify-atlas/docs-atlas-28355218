@@ -23,7 +23,7 @@ public static class Entry {
     public void register()
     public Identifier modifierId()
 }
-```
+```java
 
 <ParamField path="id" type="Identifier">
   Unique identifier constructed as `elemental_wizards_rpg:<name>`
@@ -43,7 +43,7 @@ public static class Entry {
 
 ```java
 public Entry(String name, StatusEffect effect)
-```
+```java
 
 Creates a new effect entry and automatically adds it to the registration list.
 
@@ -61,13 +61,13 @@ public static final Entry CLEANSING_WATER = new Entry(
     "cleansing_water",
     new CleansingWaterEffect(StatusEffectCategory.BENEFICIAL, 0x01d9cf)
 );
-```
+```java
 
 #### register()
 
 ```java
 public void register()
-```
+```java
 
 Registers the effect to the Minecraft registry and stores the registry entry reference.
 
@@ -75,7 +75,7 @@ Registers the effect to the Minecraft registry and stores the registry entry ref
 
 ```java
 public Identifier modifierId()
-```
+```java
 
 Generates an identifier for attribute modifiers associated with this effect.
 
@@ -89,7 +89,7 @@ Generates an identifier for attribute modifiers associated with this effect.
 
 ```java
 public static final Entry CLEANSING_WATER
-```
+```java
 
 **ID:** `elemental_wizards_rpg:cleansing_water`
 
@@ -107,7 +107,7 @@ public static final Entry CLEANSING_WATER
 
 ```java
 public static final Entry BUBBLE_FOAM
-```
+```java
 
 **ID:** `elemental_wizards_rpg:bubble_foam`
 
@@ -127,7 +127,7 @@ public static final Entry BUBBLE_FOAM
 
 ```java
 public static final Entry STONE_FLESH
-```
+```java
 
 **ID:** `elemental_wizards_rpg:stone_flesh`
 
@@ -157,7 +157,7 @@ STONE_FLESH.effect.addAttributeModifier(
     effectsConfig.value.stone_flesh_armor_toughness_increase, 
     EntityAttributeModifier.Operation.ADD_VALUE
 );
-```
+```java
 
 ### Air Effects
 
@@ -165,7 +165,7 @@ STONE_FLESH.effect.addAttributeModifier(
 
 ```java
 public static final Entry UPDRAFT
-```
+```java
 
 **ID:** `elemental_wizards_rpg:updraft`
 
@@ -203,13 +203,13 @@ UPDRAFT.effect.addAttributeModifier(
     effectsConfig.value.updraft_attack_speed_reduction,
     EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
 );
-```
+```java
 
 #### TORNADO
 
 ```java
 public static final Entry TORNADO
-```
+```java
 
 **ID:** `elemental_wizards_rpg:tornado`
 
@@ -243,7 +243,7 @@ TORNADO.effect.addAttributeModifier(
     -0.99F,
     EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
 );
-```
+```java
 
 ## Registration
 
@@ -251,7 +251,7 @@ TORNADO.effect.addAttributeModifier(
 
 ```java
 public static void register()
-```
+```java
 
 Registers all effects with their attribute modifiers and synchronization settings.
 
@@ -264,7 +264,7 @@ Registers all effects with their attribute modifiers and synchronization setting
 ```java
 // Called from ElementalMod.registerEffects()
 Effects.register();
-```
+```java
 
 **Synchronization:**
 All effects are configured with `Synchronized.configure(effect, true)` to ensure client-server consistency.

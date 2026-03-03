@@ -15,7 +15,7 @@ The `WeaponsRegister` class manages all magical weapons (wands and staffs) in th
 
 ```java
 public static final ArrayList<Weapon.Entry> entries = new ArrayList<>();
-```
+```java
 
 Stores all registered weapon entries.
 
@@ -33,7 +33,7 @@ private static Weapon.Entry entry(
     WeaponConfig defaults, 
     Equipment.WeaponType category
 )
-```
+```java
 
 **Parameters:**
 - `name` - Weapon identifier name
@@ -54,7 +54,7 @@ private static Supplier<Ingredient> ingredient(
     boolean requirement, 
     Item fallback
 )
-```
+```java
 
 **Parameters:**
 - `idString` - Item identifier string
@@ -69,7 +69,7 @@ Creates a wand weapon entry with standard wand properties.
 
 ```java
 private static Weapon.Entry wand(String name, Weapon.CustomMaterial material)
-```
+```java
 
 **Parameters:**
 - `name` - Wand identifier name
@@ -83,7 +83,7 @@ Creates a staff weapon entry with standard staff properties.
 
 ```java
 private static Weapon.Entry staff(String name, Weapon.CustomMaterial material)
-```
+```java
 
 **Parameters:**
 - `name` - Staff identifier name
@@ -97,7 +97,7 @@ Registers all weapons with their configurations.
 
 ```java
 public static void register(Map<String,WeaponConfig> configs)
-```
+```java
 
 **Parameters:**
 - `configs` - Map of weapon configurations
@@ -125,7 +125,7 @@ private static final float T0_WAND_POWER = 3F;
 private static final float T1_WAND_POWER = 4F;
 private static final float T2_WAND_POWER = 5F;
 private static final float T3_WAND_POWER = 5.5F;
-```
+```java
 
 ### Staff Tiers
 
@@ -134,7 +134,7 @@ private static final float T1_STAFF_POWER = 5F;
 private static final float T2_STAFF_POWER = 6F;
 private static final float T3_STAFF_POWER = 7F;
 private static final float T4_STAFF_POWER = 8F;
-```
+```java
 
 ## Registered Weapons
 
@@ -146,7 +146,7 @@ public static final Weapon.Entry kelpWand = wand("wand_kelp",
     Weapon.CustomMaterial.matching(ToolMaterials.WOOD, () -> Ingredient.ofItems(Items.STICK)))
     .attribute(AttributeModifier.bonus(MoreSpellSchools.WATER.id, T0_WAND_POWER))
     .loot(Equipment.LootProperties.of(0));
-```
+```java
 - Water Spell Power: +3
 - Material: Wood
 - Repair: Stick
@@ -157,7 +157,7 @@ public static final Weapon.Entry aquaWand = wand("wand_aqua",
     Weapon.CustomMaterial.matching(ToolMaterials.IRON, () -> Ingredient.ofItems(Items.GOLD_INGOT)))
     .attribute(AttributeModifier.bonus(MoreSpellSchools.WATER.id, T2_WAND_POWER))
     .loot(Equipment.LootProperties.of(2));
-```
+```java
 - Water Spell Power: +5
 - Material: Iron
 - Repair: Gold Ingot
@@ -168,7 +168,7 @@ public static final Weapon.Entry netheriteAquaWand = wand("wand_netherite_aqua",
     Weapon.CustomMaterial.matching(ToolMaterials.NETHERITE, () -> Ingredient.ofItems(Items.NETHERITE_INGOT)))
     .attribute(AttributeModifier.bonus(MoreSpellSchools.WATER.id, T3_WAND_POWER))
     .loot(Equipment.LootProperties.of(3));
-```
+```java
 - Water Spell Power: +5.5
 - Material: Netherite
 - Repair: Netherite Ingot
@@ -200,7 +200,7 @@ public static final Weapon.Entry elementalStaff = staff("staff_elemental",
     .attribute(AttributeModifier.bonus(MoreSpellSchools.WATER.id, T1_STAFF_POWER))
     .attribute(AttributeModifier.bonus(SpellSchools.FIRE.id, T1_STAFF_POWER))
     .loot(Equipment.LootProperties.of(1));
-```
+```java
 - Air/Earth/Water/Fire Spell Power: +5 each
 - Material: Diamond
 - Repair: Stick
@@ -230,7 +230,7 @@ staff("staff_ruby_terra",
     Weapon.CustomMaterial.matching(ToolMaterials.NETHERITE, repair))
     .attribute(AttributeModifier.bonus(MoreSpellSchools.EARTH.id, T4_STAFF_POWER))
     .loot(Equipment.LootProperties.of(4));
-```
+```java
 - Earth Spell Power: +8
 - Requires: Better Nether mod
 - Repair: Nether Ruby
@@ -247,7 +247,7 @@ staff("staff_aeternium_wind",
     Weapon.CustomMaterial.matching(ToolMaterials.NETHERITE, repair))
     .attribute(AttributeModifier.bonus(MoreSpellSchools.AIR.id, T4_STAFF_POWER))
     .loot(Equipment.LootProperties.of(4));
-```
+```java
 - Spell Power: +8
 - Requires: Better End mod
 - Repair: Aeternium Ingot
@@ -261,7 +261,7 @@ staff("staff_aether",
     .attribute(AttributeModifier.bonus(MoreSpellSchools.WATER.id, T4_STAFF_POWER))
     .attribute(AttributeModifier.bonus(MoreSpellSchools.AIR.id, T4_STAFF_POWER))
     .loot(Equipment.LootProperties.of("aether"));
-```
+```java
 - Earth/Water/Air Spell Power: +8 each
 - Requires: Aether mod
 - Repair: Ambrosium Shard
@@ -277,7 +277,7 @@ staff("unique_staff_1",
     .spell(ElementalWizardSpells.elemental_avatar.id())
     .loot(Equipment.LootProperties.of(5, "crystal"))
     .rarity = Rarity.RARE;
-```
+```java
 - Earth/Water/Air Spell Power: +8 each
 - Grants: Elemental Avatar spell
 - Rarity: RARE
@@ -292,7 +292,7 @@ public static final Weapon.Entry customWand = wand("custom_wand",
     Weapon.CustomMaterial.matching(ToolMaterials.DIAMOND, () -> Ingredient.ofItems(Items.DIAMOND)))
     .attribute(AttributeModifier.bonus(SpellSchools.FIRE.id, 6F))
     .loot(Equipment.LootProperties.of(2));
-```
+```java
 
 ### Custom Staff Example
 
@@ -302,4 +302,4 @@ public static final Weapon.Entry customStaff = staff("custom_staff",
     .attribute(AttributeModifier.bonus(MoreSpellSchools.WATER.id, 8F))
     .attribute(AttributeModifier.multiply(SpellPowerMechanics.HASTE.id, 0.1F))
     .loot(Equipment.LootProperties.of(3));
-```
+```java
