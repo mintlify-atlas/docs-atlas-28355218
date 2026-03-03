@@ -1,0 +1,118 @@
+{
+  "projectType": "general",
+  "projectName": "Elemental Wizards",
+  "projectDescription": "A Minecraft mod that adds elemental magic with spells, armor, and weapons for water, earth, and air wizards.",
+  "theme": "willow",
+  "primaryColor": "#01d9cf",
+  "lightColor": "#d5ebff",
+  "darkColor": "#bd8b00",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/elemental-schools",
+              "concepts/spell-system",
+              "concepts/equipment"
+            ]
+          },
+          {
+            "group": "Spells",
+            "pages": [
+              "spells/overview",
+              "spells/water-spells",
+              "spells/earth-spells",
+              "spells/air-spells"
+            ]
+          },
+          {
+            "group": "Equipment",
+            "pages": [
+              "equipment/armor-sets",
+              "equipment/weapons",
+              "equipment/spell-books"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/getting-started-wizard",
+              "guides/crafting-recipes",
+              "guides/status-effects",
+              "guides/configuration"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Core Classes",
+            "pages": [
+              "api/elemental-mod",
+              "api/spell-system",
+              "api/effects"
+            ]
+          },
+          {
+            "group": "Items & Entities",
+            "pages": [
+              "api/armor",
+              "api/weapons",
+              "api/entities"
+            ]
+          },
+          {
+            "group": "Integration",
+            "pages": [
+              "api/compatibility",
+              "api/custom-impacts"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Three elemental magic schools: Water, Earth, and Air",
+    "16 unique elemental spells with custom effects and animations",
+    "Tiered armor sets with elemental-specific bonuses",
+    "Elemental staffs and wands with spell power attributes",
+    "Custom status effects like Stone Flesh, Tornado, and Bubble Foam",
+    "Multi-loader support for Fabric and NeoForge",
+    "Integration with Spell Engine and RPG Series mods",
+    "Configurable equipment stats and effect parameters"
+  ],
+  "publicApiSurface": [
+    "ElementalMod.init()",
+    "ElementalMod.registerItems()",
+    "ElementalMod.registerEffects()",
+    "ElementalMod.registerEntities()",
+    "Effects.CLEANSING_WATER",
+    "Effects.BUBBLE_FOAM",
+    "Effects.STONE_FLESH",
+    "Effects.UPDRAFT",
+    "Effects.TORNADO",
+    "Armors.elementalArmor",
+    "Armors.kelpArmor",
+    "Armors.dripstoneArmor",
+    "Armors.windArmor",
+    "WeaponsRegister.register()",
+    "CustomSpellImpacts.registerCustomImpacts()",
+    "TornadoEntity",
+    "DripstoneBigEntity",
+    "DripstoneSmallEntity"
+  ]
+}
