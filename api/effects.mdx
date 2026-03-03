@@ -1,0 +1,315 @@
+---
+title: Effects
+description: Status effect registration and configuration
+---
+
+## Overview
+
+The `Effects` class manages registration of custom status effects for the Elemental Wizards mod. It provides structured effect entries with automatic registry management and configuration integration.
+
+**Package:** `net.elemental_wizards_rpg.effect`
+
+## Entry Class
+
+The `Entry` class encapsulates status effect registration data:
+
+```java
+public static class Entry {
+    public final Identifier id;
+    public final StatusEffect effect;
+    public RegistryEntry<StatusEffect> registryEntry;
+    
+    public Entry(String name, StatusEffect effect)
+    public void register()
+    public Identifier modifierId()
+}
+```
+
+<ParamField path="id" type="Identifier">
+  Unique identifier constructed as `elemental_wizards_rpg:<name>`
+</ParamField>
+
+<ParamField path="effect" type="StatusEffect">
+  The status effect instance
+</ParamField>
+
+<ParamField path="registryEntry" type="RegistryEntry<StatusEffect>">
+  Registry reference created during registration
+</ParamField>
+
+### Methods
+
+#### Entry Constructor
+
+```java
+public Entry(String name, StatusEffect effect)
+```
+
+Creates a new effect entry and automatically adds it to the registration list.
+
+<ParamField path="name" type="String">
+  Effect name (will be prefixed with mod ID)
+</ParamField>
+
+<ParamField path="effect" type="StatusEffect">
+  The status effect implementation
+</ParamField>
+
+**Example:**
+```java
+public static final Entry CLEANSING_WATER = new Entry(
+    "cleansing_water",
+    new CleansingWaterEffect(StatusEffectCategory.BENEFICIAL, 0x01d9cf)
+);
+```
+
+#### register()
+
+```java
+public void register()
+```
+
+Registers the effect to the Minecraft registry and stores the registry entry reference.
+
+#### modifierId()
+
+```java
+public Identifier modifierId()
+```
+
+Generates an identifier for attribute modifiers associated with this effect.
+
+**Returns:** `elemental_wizards_rpg:effect.<effect_name>`
+
+## Registered Effects
+
+### Water Effects
+
+#### CLEANSING_WATER
+
+```java
+public static final Entry CLEANSING_WATER
+```
+
+**ID:** `elemental_wizards_rpg:cleansing_water`
+
+**Category:** Beneficial
+
+**Color:** `0x01d9cf` (cyan)
+
+**Implementation:** `CleansingWaterEffect`
+
+**Synchronization:** Enabled
+
+**Description:** Water-based cleansing effect that provides beneficial properties.
+
+#### BUBBLE_FOAM
+
+```java
+public static final Entry BUBBLE_FOAM
+```
+
+**ID:** `elemental_wizards_rpg:bubble_foam`
+
+**Category:** Beneficial
+
+**Color:** `0x01d9cf` (cyan)
+
+**Implementation:** `BubbleFoamEffect`
+
+**Synchronization:** Enabled
+
+**Description:** Protective foam effect.
+
+### Earth Effects
+
+#### STONE_FLESH
+
+```java
+public static final Entry STONE_FLESH
+```
+
+**ID:** `elemental_wizards_rpg:stone_flesh`
+
+**Category:** Beneficial
+
+**Color:** `0xbd8b00` (golden brown)
+
+**Implementation:** `StoneFleshEffect`
+
+**Synchronization:** Enabled
+
+**Attribute Modifiers:**
+- **Armor:** Adds flat armor value from config (`stone_flesh_armor_increase`)
+- **Armor Toughness:** Adds flat toughness from config (`stone_flesh_armor_toughness_increase`)
+
+**Configuration:**
+```java
+STONE_FLESH.effect.addAttributeModifier(
+    EntityAttributes.GENERIC_ARMOR, 
+    STONE_FLESH.modifierId(),
+    effectsConfig.value.stone_flesh_armor_increase, 
+    EntityAttributeModifier.Operation.ADD_VALUE
+);
+STONE_FLESH.effect.addAttributeModifier(
+    EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 
+    STONE_FLESH.modifierId(),
+    effectsConfig.value.stone_flesh_armor_toughness_increase, 
+    EntityAttributeModifier.Operation.ADD_VALUE
+);
+```
+
+### Air Effects
+
+#### UPDRAFT
+
+```java
+public static final Entry UPDRAFT
+```
+
+**ID:** `elemental_wizards_rpg:updraft`
+
+**Category:** Harmful
+
+**Color:** `0xd5ebff` (light blue)
+
+**Implementation:** `UpdraftEffect`
+
+**Synchronization:** Enabled
+
+**Attribute Modifiers:**
+- **Attack Speed:** Reduces by percentage from config (`updraft_attack_speed_reduction`)
+
+**Spell Vulnerability (Air School):**
+- **Damage Multiplier:** `updraft_air_damage_vulnerability`
+- **Crit Chance Increase:** `updraft_air_spell_crit_chance_vulnerability`
+- **Crit Damage Multiplier:** `updraft_air_spell_crit_damage_vulnerability`
+
+**Configuration:**
+```java
+public static final Entry UPDRAFT = new Entry(
+    "updraft",
+    new UpdraftEffect(StatusEffectCategory.HARMFUL, 0xd5ebff)
+        .setVulnerability(MoreSpellSchools.AIR, new SpellPower.Vulnerability(
+            effectsConfig.value.updraft_air_damage_vulnerability,
+            effectsConfig.value.updraft_air_spell_crit_chance_vulnerability,
+            effectsConfig.value.updraft_air_spell_crit_damage_vulnerability
+        ))
+);
+
+UPDRAFT.effect.addAttributeModifier(
+    EntityAttributes.GENERIC_ATTACK_SPEED,
+    UPDRAFT.modifierId(),
+    effectsConfig.value.updraft_attack_speed_reduction,
+    EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+);
+```
+
+#### TORNADO
+
+```java
+public static final Entry TORNADO
+```
+
+**ID:** `elemental_wizards_rpg:tornado`
+
+**Category:** Harmful
+
+**Color:** `0xd5ebff` (light blue)
+
+**Implementation:** `TornadoEffect`
+
+**Synchronization:** Enabled
+
+**Attribute Modifiers:**
+- **Movement Speed:** Reduced by 99% (effectively immobilized)
+
+**Spell Vulnerability (Fire School):**
+- **Damage Multiplier:** `tornado_fire_spell_vulnerability`
+
+**Configuration:**
+```java
+public static final Entry TORNADO = new Entry(
+    "tornado",
+    new TornadoEffect(StatusEffectCategory.HARMFUL, 0xd5ebff)
+        .setVulnerability(SpellSchools.FIRE, new SpellPower.Vulnerability(
+            effectsConfig.value.tornado_fire_spell_vulnerability, 0, 0
+        ))
+);
+
+TORNADO.effect.addAttributeModifier(
+    EntityAttributes.GENERIC_MOVEMENT_SPEED,
+    TORNADO.modifierId(),
+    -0.99F,
+    EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+);
+```
+
+## Registration
+
+### register()
+
+```java
+public static void register()
+```
+
+Registers all effects with their attribute modifiers and synchronization settings.
+
+**Process:**
+1. Configures attribute modifiers for effects that need them
+2. Enables client-server synchronization for all effects
+3. Registers each entry to the Minecraft registry
+
+**Example Usage:**
+```java
+// Called from ElementalMod.registerEffects()
+Effects.register();
+```
+
+**Synchronization:**
+All effects are configured with `Synchronized.configure(effect, true)` to ensure client-server consistency.
+
+## Configuration Integration
+
+Effects use values from `EffectsConfig` accessed via `ElementalMod.effectsConfig.value`:
+
+<ParamField path="stone_flesh_armor_increase" type="float">
+  Flat armor bonus for Stone Flesh effect
+</ParamField>
+
+<ParamField path="stone_flesh_armor_toughness_increase" type="float">
+  Flat armor toughness bonus for Stone Flesh effect
+</ParamField>
+
+<ParamField path="updraft_attack_speed_reduction" type="float">
+  Attack speed multiplier reduction for Updraft (negative percentage)
+</ParamField>
+
+<ParamField path="updraft_air_damage_vulnerability" type="float">
+  Damage multiplier against air spells while under Updraft
+</ParamField>
+
+<ParamField path="updraft_air_spell_crit_chance_vulnerability" type="float">
+  Additional crit chance for air spells against Updraft targets
+</ParamField>
+
+<ParamField path="updraft_air_spell_crit_damage_vulnerability" type="float">
+  Crit damage multiplier for air spells against Updraft targets
+</ParamField>
+
+<ParamField path="tornado_fire_spell_vulnerability" type="float">
+  Damage multiplier against fire spells while in Tornado
+</ParamField>
+
+## Effect Categories
+
+Effects are organized by elemental school:
+
+- **Water:** Cleansing and protective effects (cyan color `0x01d9cf`)
+- **Earth:** Defensive and armor-boosting effects (golden brown `0xbd8b00`)
+- **Air:** Mobility and vulnerability debuffs (light blue `0xd5ebff`)
+
+## See Also
+
+- [ElementalMod](/api/elemental-mod) - Core mod initialization
+- [Spell System](/api/spell-system) - Spell integration with effects

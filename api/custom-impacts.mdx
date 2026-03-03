@@ -1,0 +1,307 @@
+---
+title: Custom Spell Impacts
+description: Documentation for registering and implementing custom spell impact handlers in Elemental Wizards
+---
+
+## Overview
+
+The custom spell impacts system allows you to define custom behavior when spells hit their targets. This system uses the Spell Engine API to register impact handlers that execute custom logic.
+
+## CustomSpellImpacts
+
+The `CustomSpellImpacts` class manages registration of all custom spell impact handlers.
+
+### Package
+
+```java
+net.elemental_wizards_rpg.spell.CustomSpellImpacts
+```
+
+### Methods
+
+#### registerCustomImpacts()
+
+```java
+public static void registerCustomImpacts()
+```
+
+Registers all custom spell impact handlers. This should be called during mod initialization.
+
+**Implementation:**
+```java
+SpellHandlers.registerCustomImpact(
+        Identifier.of(MOD_ID, "avatar_impact"),
+        new AvatarImpact()
+);
+```
+
+**Usage Example:**
+```java
+import net.elemental_wizards_rpg.spell.CustomSpellImpacts;
+
+public class YourMod {
+    public void initialize() {
+        // Register all custom spell impacts
+        CustomSpellImpacts.registerCustomImpacts();
+    }
+}
+```
+
+## Creating Custom Impact Handlers
+
+Custom impact handlers must implement the `SpellHandlers.CustomImpact` interface.
+
+### Interface
+
+```java
+net.spell_engine.api.spell.event.SpellHandlers.CustomImpact
+```
+
+### Required Method
+
+```java
+SpellHandlers.ImpactResult onSpellImpact(
+    RegistryEntry<Spell> spell,
+    SpellPower.Result powerResult,
+    LivingEntity caster,
+    Entity target,
+    SpellHelper.ImpactContext context
+)
+```
+
+**Parameters:**
+- `spell` - The spell registry entry being cast
+- `powerResult` - The calculated spell power result
+- `caster` - The entity casting the spell
+- `target` - The entity being targeted by the spell
+- `context` - Additional context for the spell impact (position, power, etc.)
+
+**Returns:**
+- `SpellHandlers.ImpactResult` - Result indicating if the impact was handled and if it should consume the spell
+
+## Example: AvatarImpact
+
+The `AvatarImpact` class demonstrates a complex custom impact that triggers different effects based on the caster's spell school attributes.
+
+### Package
+
+```java
+net.elemental_wizards_rpg.spell.custom_spell_impacts.AvatarImpact
+```
+
+### Implementation Overview
+
+```java
+public class AvatarImpact implements SpellHandlers.CustomImpact {
+    @Override
+    public SpellHandlers.ImpactResult onSpellImpact(
+            RegistryEntry<Spell> spell,
+            SpellPower.Result powerResult,
+            LivingEntity caster,
+            Entity target,
+            SpellHelper.ImpactContext context
+    ) {
+        // Get caster's elemental attributes
+        double air_power = caster.getAttributeValue(MoreSpellSchools.AIR.attributeEntry);
+        double earth_power = caster.getAttributeValue(MoreSpellSchools.EARTH.attributeEntry);
+        double water_power = caster.getAttributeValue(MoreSpellSchools.WATER.attributeEntry);
+        
+        // Get spell registry entries
+        RegistryEntry<Spell> air_spell = SpellRegistry.from(caster.getWorld())
+            .getEntry(Identifier.of(MOD_ID, "avatar_passives/air_draft")).get();
+        RegistryEntry<Spell> earth_spell = SpellRegistry.from(caster.getWorld())
+            .getEntry(Identifier.of(MOD_ID, "avatar_passives/earth_stoning")).get();
+        RegistryEntry<Spell> water_spell = SpellRegistry.from(caster.getWorld())
+            .getEntry(Identifier.of(MOD_ID, "avatar_passives/water_undercurrent")).get();
+        
+        if (target instanceof LivingEntity) {
+            // Trigger effect based on highest attribute
+            if (air_power >= earth_power && air_power >= water_power) {
+                // Air impact
+                SpellHelper.performImpacts(caster.getWorld(), caster, target, target, air_spell,
+                    air_spell.value().impacts, 
+                    new SpellHelper.ImpactContext()
+                        .power(SpellPower.getSpellPower(MoreSpellSchools.AIR, caster))
+                        .position(target.getPos()));
+            } else if (earth_power >= air_power && earth_power >= water_power) {
+                // Earth impact - falling projectile
+                SpellHelper.fallProjectile(caster.getWorld(), caster, target, 
+                    target.getPos(), earth_spell,
+                    new SpellHelper.ImpactContext()
+                        .power(SpellPower.getSpellPower(MoreSpellSchools.EARTH, caster))
+                        .position(caster.getPos()));
+            } else {
+                // Water impact - place cloud
+                SpellHelper.placeCloud(caster.getWorld(), caster, caster, 
+                    caster.getPos(), water_spell, context);
+            }
+        }
+        
+        return new SpellHandlers.ImpactResult(true, false);
+    }
+}
+```
+
+## Spell Helper Methods
+
+The `SpellHelper` class provides various methods for executing spell effects:
+
+### performImpacts()
+
+Executes spell impacts directly on a target:
+
+```java
+SpellHelper.performImpacts(
+    caster.getWorld(),      // World
+    caster,                 // Spell caster
+    target,                 // Impact target
+    target,                 // Spell target
+    spellEntry,            // Spell registry entry
+    spellEntry.value().impacts,  // Impact list
+    new SpellHelper.ImpactContext()
+        .power(powerResult)
+        .position(target.getPos())
+);
+```
+
+### fallProjectile()
+
+Creates a projectile that falls from above the target:
+
+```java
+SpellHelper.fallProjectile(
+    caster.getWorld(),
+    caster,
+    target,
+    target.getPos(),
+    spellEntry,
+    new SpellHelper.ImpactContext()
+        .power(powerResult)
+        .position(caster.getPos())
+);
+```
+
+### placeCloud()
+
+Places a spell cloud at a location:
+
+```java
+SpellHelper.placeCloud(
+    caster.getWorld(),
+    caster,
+    caster,              // Cloud owner
+    caster.getPos(),     // Cloud position
+    spellEntry,
+    context
+);
+```
+
+### shootProjectile() (Commented Example)
+
+Shoots a projectile towards a target:
+
+```java
+SpellHelper.shootProjectile(
+    caster.getWorld(),
+    caster,
+    target,
+    spellEntry,
+    new SpellHelper.ImpactContext()
+        .power(powerResult)
+        .position(caster.getPos())
+);
+```
+
+## Registering Your Custom Impact
+
+To register a custom impact handler:
+
+1. **Create your impact class:**
+
+```java
+package com.yourmod.spell.custom_impacts;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.spell_engine.api.spell.Spell;
+import net.spell_engine.api.spell.event.SpellHandlers;
+import net.spell_engine.internals.SpellHelper;
+import net.spell_power.api.SpellPower;
+
+public class YourCustomImpact implements SpellHandlers.CustomImpact {
+    @Override
+    public SpellHandlers.ImpactResult onSpellImpact(
+            RegistryEntry<Spell> spell,
+            SpellPower.Result powerResult,
+            LivingEntity caster,
+            Entity target,
+            SpellHelper.ImpactContext context
+    ) {
+        // Your custom impact logic here
+        if (target instanceof LivingEntity livingTarget) {
+            // Do something to the target
+            livingTarget.damage(caster.getDamageSources().magic(), 
+                (float) powerResult.randomValue());
+        }
+        
+        // Return result (handled, consumed)
+        return new SpellHandlers.ImpactResult(true, false);
+    }
+}
+```
+
+2. **Register the impact:**
+
+```java
+import net.minecraft.util.Identifier;
+import net.spell_engine.api.spell.event.SpellHandlers;
+
+public class YourCustomImpacts {
+    public static void registerCustomImpacts() {
+        SpellHandlers.registerCustomImpact(
+                Identifier.of("yourmod", "your_custom_impact"),
+                new YourCustomImpact()
+        );
+    }
+}
+```
+
+3. **Call registration in your mod initializer:**
+
+```java
+public class YourMod implements ModInitializer {
+    @Override
+    public void onInitialize() {
+        YourCustomImpacts.registerCustomImpacts();
+    }
+}
+```
+
+## Using Custom Impacts in Spell JSON
+
+Reference your custom impact in spell JSON files:
+
+```json
+{
+  "impact": [
+    {
+      "action": "CUSTOM",
+      "custom": "yourmod:your_custom_impact"
+    }
+  ]
+}
+```
+
+## Dependencies
+
+The custom spell impacts system requires:
+- `net.spell_engine.api.spell.event.SpellHandlers`
+- `net.spell_engine.api.spell.Spell`
+- `net.spell_engine.api.spell.registry.SpellRegistry`
+- `net.spell_engine.internals.SpellHelper`
+- `net.spell_power.api.SpellPower`
+- `net.minecraft.entity.Entity`
+- `net.minecraft.entity.LivingEntity`
+- `net.minecraft.registry.entry.RegistryEntry`
+- `net.minecraft.util.Identifier`

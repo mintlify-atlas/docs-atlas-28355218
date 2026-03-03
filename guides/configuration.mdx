@@ -1,0 +1,337 @@
+---
+title: Configuration
+description: Customize Elemental Wizards settings, equipment stats, and status effects to match your preferred gameplay
+---
+
+Elemental Wizards provides extensive configuration options to customize your experience. All config files are located in `.minecraft/config/elemental_wizards_rpg/`.
+
+## Configuration files
+
+The mod generates three main configuration files:
+
+### equipment_v1.json
+
+Controls weapon and armor attributes, including damage, spell power, and bonuses.
+
+**Location**: `.minecraft/config/elemental_wizards_rpg/equipment_v1.json`
+
+**What you can configure**:
+- Weapon attack damage and speed
+- Armor protection values
+- Spell power coefficients
+- Critical chance and damage bonuses
+- Haste values
+- Durability
+
+### effects_v1.json
+
+Controls status effect parameters and vulnerabilities.
+
+**Location**: `.minecraft/config/elemental_wizards_rpg/effects_v1.json`
+
+**What you can configure**:
+- Status effect strength
+- Vulnerability multipliers
+- Armor and attribute modifiers
+- Damage reduction values
+
+### tweaks.json
+
+Controls special features and mod integration.
+
+**Location**: `.minecraft/config/elemental_wizards_rpg/tweaks.json`
+
+**What you can configure**:
+- Mod-specific item requirements
+- Development settings
+
+## Effects configuration
+
+The `effects_v1.json` file controls all status effect parameters.
+
+### Default values
+
+```json
+{
+  "soaked_lightning_damage_vulnerability": 0.15,
+  "soaked_lightning_critical_chance_vulnerability": 0.1,
+  "soaked_frost_damage_vulnerability": 0.15,
+  "soaked_frost_crit_damage_vulnerability": 0.3,
+  "stone_flesh_armor_increase": 1.0,
+  "stone_flesh_armor_toughness_increase": 0.5,
+  "stone_flesh_full_hp_damage_reduction": 0.5,
+  "trembling_movement_speed_decrease": -0.1,
+  "trembling_stun_apply_duration": 6,
+  "updraft_attack_speed_reduction": -0.25,
+  "updraft_air_spell_crit_chance_vulnerability": 0.1,
+  "updraft_air_spell_crit_damage_vulnerability": 0.35,
+  "updraft_air_damage_vulnerability": 0.1,
+  "tornado_fire_spell_vulnerability": 0.15
+}
+```
+
+### Effect parameters explained
+
+#### Soaked (Water)
+
+<ParamField path="soaked_lightning_damage_vulnerability" type="float" default="0.15">
+  Additional lightning damage taken while soaked (15% = 0.15)
+</ParamField>
+
+<ParamField path="soaked_lightning_critical_chance_vulnerability" type="float" default="0.1">
+  Increased lightning critical strike chance (10% = 0.1)
+</ParamField>
+
+<ParamField path="soaked_frost_damage_vulnerability" type="float" default="0.15">
+  Additional frost damage taken while soaked (15% = 0.15)
+</ParamField>
+
+<ParamField path="soaked_frost_crit_damage_vulnerability" type="float" default="0.3">
+  Increased frost critical damage (30% = 0.3)
+</ParamField>
+
+#### Stone Flesh (Earth)
+
+<ParamField path="stone_flesh_armor_increase" type="float" default="1.0">
+  Armor points added by Stone Flesh effect
+</ParamField>
+
+<ParamField path="stone_flesh_armor_toughness_increase" type="float" default="0.5">
+  Armor toughness added by Stone Flesh effect
+</ParamField>
+
+<ParamField path="stone_flesh_full_hp_damage_reduction" type="float" default="0.5">
+  Damage reduction at full HP (50% = 0.5)
+</ParamField>
+
+<Tip>
+Increasing `stone_flesh_armor_increase` to 2.0 or 3.0 makes earth wizards significantly tankier.
+</Tip>
+
+#### Updraft (Air)
+
+<ParamField path="updraft_attack_speed_reduction" type="float" default="-0.25">
+  Attack speed penalty while under Updraft (-25% = -0.25)
+</ParamField>
+
+<ParamField path="updraft_air_damage_vulnerability" type="float" default="0.1">
+  Additional air damage taken (10% = 0.1)
+</ParamField>
+
+<ParamField path="updraft_air_spell_crit_chance_vulnerability" type="float" default="0.1">
+  Increased air spell critical chance (10% = 0.1)
+</ParamField>
+
+<ParamField path="updraft_air_spell_crit_damage_vulnerability" type="float" default="0.35">
+  Increased air spell critical damage (35% = 0.35)
+</ParamField>
+
+<Warning>
+Setting `updraft_air_spell_crit_damage_vulnerability` too high can make air builds overpowered in PvP.
+</Warning>
+
+#### Tornado (Air)
+
+<ParamField path="tornado_fire_spell_vulnerability" type="float" default="0.15">
+  Additional fire damage taken while in Tornado (15% = 0.15)
+</ParamField>
+
+## Tweaks configuration
+
+The `tweaks.json` file controls mod integration features.
+
+### Default values
+
+```json
+{
+  "ignore_items_required_mods": false
+}
+```
+
+### Parameters
+
+<ParamField path="ignore_items_required_mods" type="boolean" default="false">
+  When true, items that normally require other mods (Better Nether, Better End, Aether, Arsenal) will be available without those mods installed.
+</ParamField>
+
+**Use cases**:
+- Set to `true` if you want access to all weapons/items in creative mode
+- Automatically enabled in development environments
+- Keep `false` for normal gameplay to prevent recipe conflicts
+
+<Note>
+This setting is automatically set to `true` when running in a development environment (from source code).
+</Note>
+
+## Equipment configuration
+
+The `equipment_v1.json` file is auto-generated and contains detailed stats for all weapons and armor.
+
+### Structure
+
+```json
+{
+  "weapons": {
+    "wand_aqua": {
+      "damage": 2.0,
+      "attack_speed": -2.0,
+      "spell_power": 3.0
+    },
+    "staff_terra": {
+      "damage": 4.0,
+      "attack_speed": -2.8,
+      "spell_power": 4.0
+    }
+  },
+  "armor_sets": {
+    "elemental": {
+      "head": { "armor": 1, "attributes": [...] },
+      "chest": { "armor": 3, "attributes": [...] },
+      "legs": { "armor": 2, "attributes": [...] },
+      "feet": { "armor": 1, "attributes": [...] }
+    }
+  }
+}
+```
+
+<Warning>
+Direct editing of `equipment_v1.json` is not recommended. The file is auto-generated from code. Modify the source values in the Java classes instead if you're developing.
+</Warning>
+
+## Configuration best practices
+
+### For server administrators
+
+1. **Balance testing**: Test changes in creative mode first
+2. **Backup configs**: Keep copies of default values
+3. **Player feedback**: Survey players before making major balance changes
+4. **PvP considerations**: Status effect vulnerabilities have major impact in PvP
+
+### Recommended modifications
+
+#### More defensive gameplay
+
+```json
+{
+  "stone_flesh_armor_increase": 2.0,
+  "stone_flesh_armor_toughness_increase": 1.0,
+  "stone_flesh_full_hp_damage_reduction": 0.65
+}
+```
+
+#### Higher damage gameplay
+
+```json
+{
+  "updraft_air_spell_crit_damage_vulnerability": 0.5,
+  "soaked_frost_crit_damage_vulnerability": 0.4,
+  "tornado_fire_spell_vulnerability": 0.25
+}
+```
+
+#### Balanced PvP
+
+```json
+{
+  "updraft_air_spell_crit_damage_vulnerability": 0.25,
+  "stone_flesh_armor_increase": 1.5,
+  "tornado_fire_spell_vulnerability": 0.1
+}
+```
+
+## Applying configuration changes
+
+<Steps>
+  <Step title="Locate config directory">
+    Navigate to `.minecraft/config/elemental_wizards_rpg/`
+  </Step>
+  
+  <Step title="Edit the appropriate JSON file">
+    Use a text editor to modify values. Ensure valid JSON syntax.
+  </Step>
+  
+  <Step title="Restart Minecraft">
+    Configuration changes require a full game restart to take effect.
+  </Step>
+  
+  <Step title="Verify changes">
+    Test the modified values in-game to ensure they work as expected.
+  </Step>
+</Steps>
+
+<Warning>
+Invalid JSON syntax will cause the mod to revert to default values. Use a JSON validator if you're unsure.
+</Warning>
+
+## Sanitization
+
+All configuration files use automatic sanitization:
+
+- Invalid values are reset to defaults
+- Missing entries are auto-filled
+- Malformed JSON is replaced with default config
+- Changes are logged to the game console
+
+**Java implementation**:
+```java
+public static ConfigManager<EffectsConfig> effectsConfig = new ConfigManager<EffectsConfig>
+    ("effects_v1", new EffectsConfig())
+    .builder()
+    .setDirectory(MOD_ID)
+    .sanitize(true)  // Enables auto-sanitization
+    .build();
+```
+
+## Troubleshooting
+
+### Config file not generating
+
+- Ensure the mod is properly installed
+- Check that you have write permissions in the config directory
+- Look for errors in the game log
+
+### Changes not applying
+
+- Verify JSON syntax is correct
+- Ensure you've restarted Minecraft completely
+- Check the log for sanitization warnings
+- Delete the config file and let it regenerate to compare with your edits
+
+### Values reverting to defaults
+
+- JSON syntax error (missing comma, bracket, etc.)
+- Invalid value type (string instead of number)
+- Value out of acceptable range
+
+## Advanced configuration
+
+For mod developers and pack creators:
+
+### Datapack integration
+
+You can override spell definitions using datapacks:
+
+1. Create a datapack structure
+2. Override files in `data/elemental_wizards_rpg/spell/`
+3. Modify JSON spell definitions
+4. Load the datapack
+
+### Resource pack compatibility
+
+Customize textures and models:
+
+1. Extract mod assets
+2. Create resource pack with `assets/elemental_wizards_rpg/` structure
+3. Modify textures, models, or sounds
+4. Apply resource pack
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Status effects" icon="sparkles" href="/guides/status-effects">
+    Learn how effects work to better configure them
+  </Card>
+  <Card title="Equipment" icon="shield" href="/equipment/armor-sets">
+    Understand equipment stats you're modifying
+  </Card>
+</CardGroup>

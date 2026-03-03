@@ -1,0 +1,428 @@
+---
+title: Spell System
+description: Spell registration and configuration for Elemental Wizards
+---
+
+## Overview
+
+The `ElementalWizardSpells` class manages spell registration, configuration, and creation for the Elemental Wizards mod. It provides utility methods for building spells and maintains a registry of all spell entries.
+
+**Package:** `net.elemental_wizards_rpg.spell`
+
+## Entry Record
+
+Spells are stored as `Entry` records that contain all metadata and configuration:
+
+```java
+public record Entry(
+    Identifier id,
+    Spell spell,
+    String title,
+    String description,
+    @Nullable SpellTooltip.DescriptionMutator mutator
+)
+```
+
+<ParamField path="id" type="Identifier">
+  Unique identifier for the spell (e.g., `elemental_wizards_rpg:terra_drip_circle`)
+</ParamField>
+
+<ParamField path="spell" type="Spell">
+  The spell data object containing all configuration
+</ParamField>
+
+<ParamField path="title" type="String">
+  Display name shown in spell tooltips
+</ParamField>
+
+<ParamField path="description" type="String">
+  Description text with placeholder support (e.g., `{critical_chance_bonus}`)
+</ParamField>
+
+<ParamField path="mutator" type="SpellTooltip.DescriptionMutator">
+  Optional tooltip description modifier for dynamic text
+</ParamField>
+
+## Spell Registry
+
+<ParamField path="entries" type="List<Entry>">
+  Static list containing all registered spell entries. Spells are automatically added when created.
+</ParamField>
+
+## Utility Methods
+
+### damageImpact()
+
+```java
+private static Spell.Impact damageImpact(float coefficient, float knockback)
+```
+
+Creates a damage impact with spell power scaling.
+
+<ParamField path="coefficient" type="float">
+  Spell power coefficient for damage calculation
+</ParamField>
+
+<ParamField path="knockback" type="float">
+  Knockback strength applied to targets
+</ParamField>
+
+**Example:**
+```java
+var damage = damageImpact(0.65F, 0F); // 65% spell power, no knockback
+```
+
+### configureCooldown()
+
+```java
+private static void configureCooldown(Spell spell, float duration)
+```
+
+Configures spell cooldown duration.
+
+<ParamField path="spell" type="Spell">
+  The spell to configure
+</ParamField>
+
+<ParamField path="duration" type="float">
+  Cooldown duration in seconds
+</ParamField>
+
+**Example:**
+```java
+configureCooldown(spell, 22); // 22 second cooldown
+```
+
+### createEffectImpact()
+
+```java
+private static Spell.Impact createEffectImpact(Identifier effectId, float duration)
+```
+
+Creates a status effect impact.
+
+<ParamField path="effectId" type="Identifier">
+  Registry identifier of the status effect
+</ParamField>
+
+<ParamField path="duration" type="float">
+  Effect duration in seconds
+</ParamField>
+
+**Example:**
+```java
+var debuff = createEffectImpact(Identifier.of("minecraft:levitation"), 2);
+```
+
+### createHeal()
+
+```java
+private static Spell.Impact createHeal(float coefficient)
+```
+
+Creates a healing impact with spell power scaling.
+
+<ParamField path="coefficient" type="float">
+  Spell power coefficient for healing calculation
+</ParamField>
+
+**Example:**
+```java
+var heal = createHeal(0.2F); // 20% spell power as healing
+```
+
+### modifierSpellBase()
+
+```java
+private static Spell modifierSpellBase()
+```
+
+Creates base configuration for modifier spells that enhance other spells.
+
+**Returns:** A `Spell` object configured as a tier 1 modifier with:
+- Range: 0
+- Type: `MODIFIER`
+- Compact tooltip display
+- No header shown
+
+### passiveSpellBase()
+
+```java
+private static Spell passiveSpellBase()
+```
+
+Creates base configuration for passive spells that trigger automatically.
+
+**Returns:** A `Spell` object configured as a tier 8 passive with:
+- Range: 0
+- Type: `PASSIVE`
+- Passive trigger configuration
+
+### createImpactModifier()
+
+```java
+private static Spell.Impact.TargetModifier createImpactModifier(String entityType)
+```
+
+Creates a target modifier for conditional spell effects.
+
+<ParamField path="entityType" type="String">
+  Entity type tag or ID (e.g., `#minecraft:undead`, `#c:bosses`)
+</ParamField>
+
+### bleedImmuneDeny()
+
+```java
+private static void bleedImmuneDeny(Spell.Impact impact)
+```
+
+Makes undead entities immune to the impact (typically for bleeding effects).
+
+**Example:**
+```java
+var debuff = createEffectImpact(MRPGCEffects.BLEEDING.id, 4);
+bleedImmuneDeny(debuff); // Undead won't bleed
+```
+
+### bossImmuneDeny()
+
+```java
+private static void bossImmuneDeny(Spell.Impact impact)
+```
+
+Makes boss entities immune to the impact (for crowd control effects).
+
+## Spell Categories
+
+### Modifier Spells
+
+Modifier spells enhance other spells when learned. They use pattern matching to identify target spells.
+
+#### improved_wind_updraft
+
+```java
+public static Entry improved_wind_updraft
+```
+
+**ID:** `elemental_wizards_rpg:improved_wind_updraft`
+
+**School:** Air
+
+**Effect:** Increases critical chance of Updraft by 5%
+
+**Implementation:**
+```java
+var modifier = new Spell.Modifier();
+modifier.spell_pattern = "elemental_wizards_rpg:wind_updraft";
+modifier.power_modifier = new Spell.Impact.Modifier();
+modifier.power_modifier.critical_chance_bonus = 0.05F;
+```
+
+#### improved_terra_drip_circle
+
+**ID:** `elemental_wizards_rpg:improved_terra_drip_circle`
+
+**School:** Earth
+
+**Effect:** Increases Terra Circle duration by 2 seconds
+
+**Implementation:**
+```java
+modifier.spell_pattern = "elemental_wizards_rpg:terra_drip_circle";
+modifier.spawn_duration_add = 2;
+```
+
+#### improved_aqua_springwater
+
+**ID:** `elemental_wizards_rpg:improved_aqua_springwater`
+
+**School:** Water
+
+**Effect:** Increases Springwater Regeneration duration by 2 seconds
+
+### Passive Spells
+
+Passive spells trigger automatically based on conditions.
+
+#### elemental_avatar
+
+**ID:** `elemental_wizards_rpg:elemental_avatar`
+
+**School:** Generic
+
+**Trigger:** 20% chance on spell damage impact from active spells
+
+**Cooldown:** 20 seconds
+
+**Effect:** Custom avatar impact handler
+
+**Implementation:**
+```java
+var trigger = new Spell.Trigger();
+trigger.type = Spell.Trigger.Type.SPELL_IMPACT_SPECIFIC;
+trigger.chance = 0.2F;
+trigger.impact = new Spell.Trigger.ImpactCondition();
+trigger.impact.impact_type = Spell.Impact.Action.Type.DAMAGE.toString();
+trigger.spell = new Spell.Trigger.SpellCondition();
+trigger.spell.type = Spell.Type.ACTIVE;
+```
+
+#### avatar_passives_air_draft
+
+**ID:** `elemental_wizards_rpg:avatar_passives/air_draft`
+
+**School:** Air
+
+**Area:** 5 block radius
+
+**Effects:**
+- Damage: 40% spell power coefficient
+- Levitation debuff (2 seconds, boss immune)
+- Knockback: 0.1
+
+**Implementation:**
+```java
+var debuff = createEffectImpact(Identifier.of("minecraft:levitation"), 2);
+bossImmuneDeny(debuff);
+debuff.action.status_effect.amplifier_power_multiplier = 0.3F;
+
+spell.area_impact = new Spell.AreaImpact();
+spell.area_impact.radius = 5.0F;
+spell.area_impact.area.distance_dropoff = Spell.Target.Area.DropoffCurve.SQUARED;
+```
+
+#### avatar_passives_earth_stoning
+
+**ID:** `elemental_wizards_rpg:avatar_passives/earth_stoning`
+
+**School:** Earth
+
+**Delivery:** Meteor with 12 block launch height
+
+**Effects:**
+- Damage: 50% spell power coefficient
+- Knockback: 1.5
+- Area: 2 block radius
+- Extra projectiles: 12 meteors with 4 tick delay
+
+**Implementation:**
+```java
+spell.deliver.type = Spell.Delivery.Type.METEOR;
+var meteor = new Spell.Delivery.Meteor();
+meteor.launch_height = 12;
+meteor.launch_radius = 4;
+meteor.launch_properties.velocity = 0.8F;
+meteor.launch_properties.extra_launch_count = 12;
+meteor.launch_properties.extra_launch_delay = 4;
+```
+
+#### avatar_passives_water_undercurrent
+
+**ID:** `elemental_wizards_rpg:avatar_passives/water_undercurrent`
+
+**School:** Water
+
+**Delivery:** Cloud (4 block radius, 5 second duration)
+
+**Effects:**
+- Damage: 15% spell power coefficient every 15 ticks
+- Heal: 20% spell power coefficient every 15 ticks
+- Knockback: 1.5
+
+**Implementation:**
+```java
+var cloud = new Spell.Delivery.Cloud();
+cloud.volume.radius = 4.0F;
+cloud.impact_tick_interval = 15;
+cloud.time_to_live_seconds = 5;
+
+var damage = damageImpact(0.15F, 1.5F);
+var heal = createHeal(0.2F);
+spell.impacts = List.of(damage, heal);
+```
+
+### Active Spells
+
+Active spells are cast by players.
+
+#### terra_drip_circle
+
+**ID:** `elemental_wizards_rpg:terra_drip_circle`
+
+**School:** Earth
+
+**Tier:** 3
+
+**Range:** 15 blocks
+
+**Cast Time:** 0.7 seconds
+
+**Cooldown:** 22 seconds
+
+**Cost:** 1 Terra Stone + 0.4 exhaustion
+
+**Delivery:** Multi-ring dripstone cloud formation
+- Inner ring: 2 blocks, 0.5 scale, 5 second duration
+- Outer ring: 3 blocks, 1.0 scale, 5 second duration
+- 11 dripstones per ring positioned in circle
+
+**Effects:**
+- Damage: 65% spell power coefficient
+- Bleeding: 4 seconds (undead immune, 20% amplifier scaling)
+
+**Implementation:**
+```java
+SpellBuilder.Casting.cast(spell, 0.7F);
+SpellBuilder.Cost.cooldown(spell, 22);
+SpellBuilder.Cost.item(spell, "more_rpg_classes:terra_stone", 1);
+
+var debuff = createEffectImpact(debuffEffect.id, 4);
+bleedImmuneDeny(debuff);
+debuff.action.status_effect.amplifier_power_multiplier = 0.2F;
+```
+
+#### terra_earthquake
+
+**ID:** `elemental_wizards_rpg:terra_earthquake`
+
+**School:** Earth
+
+**Tier:** 4
+
+**Range:** 16 blocks
+
+**Cast Time:** 5.0 seconds (channeled, 10 tick intervals)
+
+**Cooldown:** 30 seconds
+
+**Cost:** 1 Terra Stone + 0.5 exhaustion
+
+**Target:** 360° area around caster
+
+**Effects:**
+- Damage: 80% spell power coefficient
+- Trembling debuff (custom handler, boss immune)
+
+**Implementation:**
+```java
+spell.active.cast.duration = 5.0F;
+spell.active.cast.channel_ticks = 10;
+
+spell.target.type = Spell.Target.Type.AREA;
+spell.target.area.angle_degrees = 360;
+
+var custom = new Spell.Impact();
+bossImmuneDeny(custom);
+custom.action.custom.handler = "more_rpg_classes:trembling";
+```
+
+## Constants
+
+<ParamField path="WATER_SPELL_COLOR" type="Color">
+  Standard water spell color: `0x4a8bff` (blue)
+</ParamField>
+
+## See Also
+
+- [ElementalMod](/api/elemental-mod) - Core mod initialization
+- [Effects](/api/effects) - Status effect definitions

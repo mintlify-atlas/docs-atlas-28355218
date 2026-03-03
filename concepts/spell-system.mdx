@@ -1,0 +1,406 @@
+---
+title: Spell System
+description: Learn how spells, spell power, cooldowns, and costs work in Elemental Wizards
+---
+
+The spell system in Elemental Wizards is powered by the Spell Engine API, providing a flexible and powerful magic framework. Understanding spell mechanics is crucial for mastering elemental magic.
+
+## How Spells Work
+
+Spells in Elemental Wizards follow a structured lifecycle:
+
+<Steps>
+  <Step title="Casting">
+    Hold the spell key to begin casting. Each spell has a unique cast duration and animation.
+  </Step>
+  <Step title="Targeting">
+    Spells target enemies, allies, or locations based on their target type (AIM, BEAM, CLOUD).
+  </Step>
+  <Step title="Release">
+    Release the spell key to unleash the spell with release animations and effects.
+  </Step>
+  <Step title="Delivery">
+    The spell travels to its target via projectiles, beams, or instant delivery.
+  </Step>
+  <Step title="Impact">
+    On impact, spells deal damage, apply effects, or heal targets.
+  </Step>
+</Steps>
+
+## Spell Power Coefficient
+
+Every spell has a **spell power coefficient** that determines its effectiveness. Your actual damage or healing is calculated as:
+
+```
+Final Value = Base Spell Power × Spell Power Coefficient
+```
+
+### Example Spell Power Coefficients
+
+<CodeGroup>
+```json Aqua Splash (Healing)
+{
+  "action": {
+    "type": "HEAL",
+    "heal": {
+      "spell_power_coefficient": 1.0
+    }
+  }
+}
+```
+
+```json Aqua Splash (Damage)
+{
+  "action": {
+    "type": "DAMAGE",
+    "damage": {
+      "spell_power_coefficient": 0.6
+    }
+  }
+}
+```
+
+```json Hydro Beam
+{
+  "action": {
+    "type": "DAMAGE",
+    "damage": {
+      "spell_power_coefficient": 1.1
+    }
+  }
+}
+```
+</CodeGroup>
+
+<Info>
+  Higher tier spells generally have higher coefficients, but also longer cooldowns and cast times.
+</Info>
+
+## Spell Tiers
+
+Spells are organized into tiers (0-4), representing their power level:
+
+| Tier | Description | Examples |
+|------|-------------|----------|
+| **0** | Basic spells, no cooldown | Aqua Splash, Terra Stone Throw, Wind Gust |
+| **1** | Early-game spells | Water Whip, Stone Spear |
+| **2** | Mid-game spells | Bubble Beam, Stone Flesh |
+| **3** | Advanced spells | Explosive Bubbles, Air Cutter |
+| **4** | Ultimate spells | Hydro Beam, Shattering Stone, Tornado |
+
+### Spell Tier Configuration
+
+From the spell JSON files:
+
+<CodeGroup>
+```json Tier 0 (Basic)
+{
+  "tier": 0,
+  "group": "primary",
+  "cost": {
+    "item": {
+      "id": "more_rpg_classes:aqua_stone"
+    }
+  }
+}
+```
+
+```json Tier 4 (Ultimate)
+{
+  "tier": 4,
+  "cost": {
+    "exhaust": 0.2,
+    "cooldown": {
+      "duration": 22,
+      "haste_affected": true,
+      "proportional": true
+    },
+    "item": {
+      "id": "more_rpg_classes:aqua_stone"
+    }
+  }
+}
+```
+</CodeGroup>
+
+## Cooldowns
+
+Higher-tier spells have cooldowns to balance their power:
+
+### Cooldown Types
+
+<CardGroup cols={2}>
+  <Card title="Haste-Affected" icon="clock">
+    Cooldown duration is reduced by your Haste stat.
+    
+    Example: Hydro Beam (22s, haste-affected)
+  </Card>
+  <Card title="Proportional" icon="chart-line">
+    Cooldown scales with channel or cast duration.
+    
+    Example: Tornado (30s, proportional)
+  </Card>
+</CardGroup>
+
+### Example Cooldowns from Source
+
+```json
+// Hydro Beam - 22 second cooldown
+"cooldown": {
+  "duration": 22,
+  "haste_affected": true,
+  "proportional": true
+}
+
+// Shattering Stone - 18 second cooldown
+"cooldown": {
+  "duration": 18,
+  "haste_affected": true
+}
+
+// Tornado - 30 second cooldown
+"cooldown": {
+  "duration": 30,
+  "proportional": true
+}
+```
+
+<Tip>
+  Water armor sets provide Haste bonuses, significantly reducing cooldowns for all schools.
+</Tip>
+
+## Spell Costs
+
+All spells require **elemental stones** to cast:
+
+| School | Resource Item | Registry ID |
+|--------|---------------|-------------|
+| Water | Aqua Stone | `more_rpg_classes:aqua_stone` |
+| Earth | Terra Stone | `more_rpg_classes:terra_stone` |
+| Air | Storm Stone | `more_rpg_classes:storm_stone` |
+
+### Exhaust Cost
+
+Some powerful spells also apply **exhaust** (hunger):
+
+```json
+"cost": {
+  "exhaust": 0.2,  // Reduces hunger
+  "cooldown": { ... },
+  "item": { ... }
+}
+```
+
+<Warning>
+  Keep food in your inventory when using high-tier spells with exhaust costs!
+</Warning>
+
+## Targeting Types
+
+Spells use different targeting mechanisms:
+
+### AIM Targeting
+
+Most basic spells use aim targeting:
+
+```json
+"target": {
+  "type": "AIM",
+  "aim": {
+    "required": true,
+    "use_caster_as_fallback": false
+  }
+}
+```
+
+- **required: true** - Must have a valid target
+- **use_caster_as_fallback** - Self-cast if no target (used in Aqua Splash for healing)
+
+### BEAM Targeting
+
+Channeled beam spells like Hydro Beam:
+
+```json
+"target": {
+  "type": "BEAM",
+  "beam": {
+    "texture_id": "elemental_wizards_rpg:textures/entity/hydro_beam.png",
+    "width": 0.08,
+    "flow": 2.0
+  }
+}
+```
+
+### CLOUD Targeting
+
+Area-of-effect spells like Tornado:
+
+```json
+"deliver": {
+  "type": "CLOUD",
+  "clouds": [{
+    "volume": {
+      "radius": 4.0,
+      "area": {
+        "vertical_range_multiplier": 4.0,
+        "horizontal_range_multiplier": 4.0
+      }
+    },
+    "impact_tick_interval": 4,
+    "time_to_live_seconds": 10
+  }]
+}
+```
+
+## Cast Times and Animations
+
+Each spell has a unique cast time and animation:
+
+<CodeGroup>
+```json Quick Cast (1.0s)
+"cast": {
+  "duration": 1,
+  "animation": "spell_engine:one_handed_projectile_charge"
+}
+```
+
+```json Medium Cast (1.2s)
+"cast": {
+  "duration": 1.2,
+  "animation": "more_rpg_classes:two_handed_ground_channeling"
+}
+```
+
+```json Long Channel (5s)
+"cast": {
+  "duration": 5,
+  "animation": "spell_engine:two_handed_channeling",
+  "channel_ticks": 4
+}
+```
+</CodeGroup>
+
+### Available Animations
+
+- `spell_engine:one_handed_projectile_charge`
+- `spell_engine:one_handed_projectile_release`
+- `spell_engine:two_handed_channeling`
+- `spell_engine:one_handed_sky_charge`
+- `more_rpg_classes:two_handed_ground_channeling`
+- `more_rpg_classes:two_handed_ground_release`
+
+## Projectile Delivery
+
+Many spells use projectiles to deliver their effects:
+
+```json
+"deliver": {
+  "type": "PROJECTILE",
+  "projectile": {
+    "launch_properties": {
+      "velocity": 1.1
+    },
+    "projectile": {
+      "client_data": {
+        "model": {
+          "model_id": "elemental_wizards_rpg:projectile/spell_stone",
+          "scale": 1.5
+        }
+      }
+    }
+  }
+}
+```
+
+### Projectile Models
+
+- `elemental_wizards_rpg:projectile/spell_stone` - Stone projectiles
+- `elemental_wizards_rpg:projectile/stone_shard` - Sharp stone fragments
+- Custom particle effects for visual feedback
+
+## Impact Effects
+
+Spells can have multiple impacts on the same target:
+
+```json
+"impacts": [
+  {
+    "action": {
+      "type": "DAMAGE",
+      "damage": {
+        "spell_power_coefficient": 0.7
+      }
+    }
+  },
+  {
+    "action": {
+      "type": "STATUS_EFFECT",
+      "status_effect": {
+        "effect_id": "more_rpg_classes:bleeding",
+        "duration": 5,
+        "amplifier_power_multiplier": 0.2
+      }
+    }
+  }
+]
+```
+
+<Info>
+  Each impact can have its own particles, sounds, and target conditions.
+</Info>
+
+## Area Impact
+
+Some spells affect an area around the impact point:
+
+```json
+"area_impact": {
+  "radius": 1.5,
+  "area": {
+    "distance_dropoff": "NONE"
+  },
+  "particles": [...],
+  "sound": {...}
+}
+```
+
+- **radius** - Affects all entities within this distance
+- **distance_dropoff** - Whether damage decreases with distance
+
+## Spell Scrolls
+
+Tier 4 spells can be crafted into scrolls for single-use casting:
+
+```json
+"active": {
+  "scroll": {},
+  "cast": { ... }
+}
+```
+
+<Tip>
+  Create spell scrolls to use powerful spells without consuming your regular resources!
+</Tip>
+
+## Maximizing Spell Effectiveness
+
+To get the most out of your spells:
+
+1. **Increase Spell Power** - Use wands, staffs, and armor sets
+2. **Stack Haste** - Reduce cooldowns with Water armor
+3. **Build Crit** - Maximize burst with Earth/Air armor
+4. **Manage Resources** - Always carry elemental stones
+5. **Combo Effects** - Apply debuffs before high-damage spells
+
+<CardGroup cols={2}>
+  <Card title="Example Combo: Earth" icon="mountain">
+    1. Cast Stone Flesh for defense
+    2. Apply Bleeding with Shattering Stone
+    3. Finish with critical strikes
+  </Card>
+  <Card title="Example Combo: Air" icon="wind">
+    1. Apply Updraft debuff
+    2. Trap with Tornado
+    3. Unleash high crit damage spells
+  </Card>
+</CardGroup>

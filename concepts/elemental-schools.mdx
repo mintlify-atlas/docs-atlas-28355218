@@ -1,0 +1,206 @@
+---
+title: Elemental Schools
+description: Master the three elemental schools of magic in Elemental Wizards
+---
+
+Elemental Wizards features three distinct schools of magic, each with unique characteristics, playstyles, and spell progressions. Choose your school wisely to match your preferred combat style.
+
+## Water School (Aqua)
+
+The Water school focuses on **healing, sustain, and consistent damage**. Water wizards excel at keeping themselves and allies alive while wearing down enemies.
+
+### Characteristics
+
+- **Primary Role**: Healer and sustained damage dealer
+- **School Identifier**: `WATER`
+- **Resource Item**: Aqua Stone (`more_rpg_classes:aqua_stone`)
+- **Spell Books**: Aqua spell books contain water-specific spells
+
+### Water Effects
+
+Water spells can apply unique status effects:
+
+<CardGroup cols={2}>
+  <Card title="Cleansing Water" icon="droplet">
+    Beneficial effect that cleanses negative status effects
+  </Card>
+  <Card title="Bubble Foam" icon="wind">
+    Protective bubbles that shield the caster
+  </Card>
+  <Card title="Soaked" icon="water">
+    Debuff applied to enemies, making them vulnerable to additional damage
+  </Card>
+</CardGroup>
+
+### Signature Spells
+
+**Aqua Splash** (Tier 0)
+- Dual-purpose spell that heals allies (1.0x spell power) or damages enemies (0.6x spell power)
+- Applies Soaked debuff for 4 seconds
+- Short 1.2s cast time
+- No cooldown
+
+**Hydro Beam** (Tier 4)
+- Channeled beam attack dealing 1.1x spell power damage
+- 5-second channel duration with ticks every 4 intervals
+- Applies Soaked for 10 seconds
+- 22-second cooldown (affected by haste)
+- Visual beam texture: `elemental_wizards_rpg:textures/entity/hydro_beam.png`
+
+### Armor Sets
+
+Water armor provides **spell power bonuses** and **haste**:
+
+| Armor Set | Spell Power | Haste | Tier |
+|-----------|-------------|-------|------|
+| Kelp Armor | +25% per piece | +2% per piece | 2 |
+| Netherite Kelp | +30% per piece | +3% per piece | 3 |
+| Ocean Robe (Epic) | +35% per piece | +3% per piece | 5 |
+
+<Info>
+  Haste reduces spell cooldowns and cast times, making it ideal for sustained spellcasting.
+</Info>
+
+## Earth School (Terra)
+
+The Earth school emphasizes **heavy damage, critical strikes, and defensive buffs**. Earth wizards are tough, dealing devastating blows to their enemies.
+
+### Characteristics
+
+- **Primary Role**: Tank and burst damage dealer
+- **School Identifier**: `EARTH`
+- **Resource Item**: Terra Stone (`more_rpg_classes:terra_stone`)
+- **Spell Books**: Terra spell books contain earth-specific spells
+
+### Earth Effects
+
+<Card title="Stone Flesh" icon="shield">
+  Hardens the caster's skin, providing:
+  - Increased armor (configurable)
+  - Increased armor toughness (configurable)
+  - Physical damage resistance
+</Card>
+
+### Signature Spells
+
+**Terra Stone Throw** (Tier 0)
+- Launches a stone projectile dealing 0.7x spell power damage
+- 1.5 block area of effect on impact
+- Visual model: `elemental_wizards_rpg:projectile/spell_stone`
+- No cooldown
+
+**Shattering Stone** (Tier 4)
+- Launches stone shards that chain to nearby enemies
+- 0.7x spell power per hit with chain reaction (10 targets max)
+- Applies Bleeding debuff for 5 seconds (0.2x power multiplier per tick)
+- 18-second cooldown (affected by haste)
+- 1.5 block area of effect
+
+### Armor Sets
+
+Earth armor provides **spell power bonuses** and **critical chance**:
+
+| Armor Set | Spell Power | Crit Chance | Tier |
+|-----------|-------------|-------------|------|
+| Dripstone Armor | +25% per piece | +2% per piece | 2 |
+| Netherite Dripstone | +30% per piece | +3% per piece | 3 |
+| Mountain Robe (Epic) | +35% per piece | +3% per piece | 5 |
+
+<Tip>
+  Stack critical chance and critical damage for devastating burst combos.
+</Tip>
+
+## Air School (Wind)
+
+The Air school specializes in **mobility, critical damage, and crowd control**. Air wizards are agile spellcasters who control the battlefield.
+
+### Characteristics
+
+- **Primary Role**: Mobility and critical damage specialist
+- **School Identifier**: `AIR`
+- **Resource Item**: Storm Stone (`more_rpg_classes:storm_stone`)
+- **Spell Books**: Wind spell books contain air-specific spells
+
+### Air Effects
+
+Air spells apply powerful debuffs:
+
+<CardGroup cols={2}>
+  <Card title="Updraft" icon="arrow-up">
+    Harmful effect that:
+    - Reduces attack speed (configurable)
+    - Increases vulnerability to Air damage
+    - Increases Air spell crit chance taken
+    - Increases Air spell crit damage taken
+  </Card>
+  <Card title="Tornado" icon="tornado">
+    Traps enemies in place:
+    - Reduces movement speed by 99%
+    - Increases Fire spell vulnerability
+    - Cannot affect bosses
+  </Card>
+</CardGroup>
+
+### Signature Spells
+
+**Wind Gust** (Tier 0)
+- Quick projectile dealing 0.65x spell power damage
+- 0.75 knockback effect
+- 1-second cast time
+- No cooldown
+
+**Tornado** (Tier 4)
+- Creates a massive tornado cloud at target location
+- 4-block radius, lasts 10 seconds
+- Deals 0.55x spell power damage every 4 ticks
+- Applies Tornado effect (immobilizes non-boss enemies)
+- Visual model: `elemental_wizards_rpg:effect/tornado` (rotates -25 degrees/tick)
+- 30-second cooldown (proportional)
+
+### Armor Sets
+
+Air armor provides **spell power bonuses** and **critical damage**:
+
+| Armor Set | Spell Power | Crit Damage | Tier |
+|-----------|-------------|-------------|------|
+| Wind Armor | +25% per piece | +5% per piece | 2 |
+| Netherite Wind | +30% per piece | +6% per piece | 3 |
+| Hurricane Robe (Epic) | +35% per piece | +8% per piece | 5 |
+
+<Warning>
+  Air spells have some of the longest cooldowns. Plan your spell rotations carefully!
+</Warning>
+
+## Choosing Your School
+
+Each school offers distinct advantages:
+
+<CardGroup cols={3}>
+  <Card title="Water" icon="droplet" color="#01d9cf">
+    **Best for**: Survivability and healing
+    
+    High sustain, low cooldowns, versatile healing
+  </Card>
+  <Card title="Earth" icon="mountain" color="#bd8b00">
+    **Best for**: Tankiness and burst damage
+    
+    High defense, critical strikes, area damage
+  </Card>
+  <Card title="Air" icon="wind" color="#d5ebff">
+    **Best for**: Mobility and control
+    
+    High critical damage, crowd control, knockback
+  </Card>
+</CardGroup>
+
+## Multi-School Builds
+
+You're not limited to a single school! The **Elemental Armor** set provides balanced bonuses:
+
+- +20% spell power to **all four schools** (Water, Earth, Air, Fire)
+- Each armor piece contributes equally
+- Perfect for experimenting with multiple schools
+
+<Tip>
+  The Elemental Staff also boosts all schools, making it ideal for hybrid builds.
+</Tip>

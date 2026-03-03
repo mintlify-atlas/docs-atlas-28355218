@@ -1,0 +1,185 @@
+---
+title: ElementalMod
+description: Core mod class for Elemental Wizards RPG
+---
+
+## Overview
+
+The `ElementalMod` class is the main entry point for the Elemental Wizards RPG mod. It handles initialization, registration of items, effects, entities, and manages configuration files.
+
+**Package:** `net.elemental_wizards_rpg`
+
+## Constants
+
+<ParamField path="MOD_ID" type="String">
+  The mod identifier: `"elemental_wizards_rpg"`
+</ParamField>
+
+<ParamField path="LOGGER" type="Logger">
+  SLF4J logger instance for the mod
+</ParamField>
+
+## Configuration Managers
+
+The mod uses three configuration managers to handle different aspects of configuration:
+
+### itemConfig
+
+<ParamField path="itemConfig" type="ConfigManager<ConfigFile.Equipment>">
+  Manages equipment configuration including weapons and armor sets. Located at `config/elemental_wizards_rpg/equipment_v1.json`.
+  
+  **Features:**
+  - Auto-sanitization enabled
+  - Stores weapon and armor set configurations
+  - Loaded from `Default.itemConfig`
+</ParamField>
+
+### effectsConfig
+
+<ParamField path="effectsConfig" type="ConfigManager<EffectsConfig>">
+  Manages effect configurations for status effects. Located at `config/elemental_wizards_rpg/effects_v1.json`.
+  
+  **Features:**
+  - Auto-sanitization enabled
+  - Controls effect damage vulnerabilities and attribute modifiers
+</ParamField>
+
+### tweaksConfig
+
+<ParamField path="tweaksConfig" type="ConfigManager<TweaksConfig>">
+  Manages general tweaks and mod settings. Located at `config/elemental_wizards_rpg/tweaks.json`.
+  
+  **Features:**
+  - Auto-sanitization enabled
+  - Contains `ignore_items_required_mods` flag (auto-enabled in dev environment)
+</ParamField>
+
+## Methods
+
+### init()
+
+```java
+public static void init()
+```
+
+Initializes the mod by loading configurations and registering custom spell impacts and compatibility modules.
+
+**Process:**
+1. Refreshes all configuration managers (`itemConfig`, `effectsConfig`, `tweaksConfig`)
+2. Enables `ignore_items_required_mods` in development environments
+3. Registers custom spell impacts via `CustomSpellImpacts.registerCustomImpacts()`
+4. Registers compatibility modules via `WizardsCompat.registerCompat()`
+
+**Example:**
+```java
+// Called from mod initializer
+ElementalMod.init();
+```
+
+### registerItems()
+
+```java
+public static void registerItems()
+```
+
+Registers all mod items, item groups, weapons, and armor sets.
+
+**Process:**
+1. Creates and registers the Elemental Wizard item group
+2. Registers mod items via `ElementalItems.registerModItems()`
+3. Populates item groups via `ElementalGroup.registerItemGroups()`
+4. Registers weapons from config: `WeaponsRegister.register(itemConfig.value.weapons)`
+5. Registers armor sets from config: `Armors.register(itemConfig.value.armor_sets)`
+6. Enables Armory compatibility resource pack if Armory is loaded
+7. Saves item configuration
+
+**Item Group:**
+The mod creates a creative tab with ID `elemental_wizards_rpg.general` using the Kelp Armor helmet as the icon.
+
+**Example:**
+```java
+// Called after init()
+ElementalMod.registerItems();
+```
+
+### registerEffects()
+
+```java
+public static void registerEffects()
+```
+
+Registers all status effects defined in the `Effects` class.
+
+**Process:**
+Delegates to `Effects.register()` to register all effect entries.
+
+**Example:**
+```java
+ElementalMod.registerEffects();
+```
+
+### registerEntities()
+
+```java
+public static void registerEntities()
+```
+
+Registers custom entity types for spell effects and projectiles.
+
+**Registered Entities:**
+
+<ParamField path="DripstoneBigEntity" type="EntityType">
+  **ID:** `elemental_wizards_rpg:dripstone_big`
+  
+  **Properties:**
+  - Dimensions: 6.0F × 0.5F (width × height)
+  - Spawn group: MISC
+  - Fire immune
+  - Track range: 128 blocks
+  - Update rate: 20 ticks
+</ParamField>
+
+<ParamField path="DripstoneSmallEntity" type="EntityType">
+  **ID:** `elemental_wizards_rpg:dripstone_small`
+  
+  **Properties:**
+  - Dimensions: 6.0F × 0.5F (width × height)
+  - Spawn group: MISC
+  - Fire immune
+  - Track range: 128 blocks
+  - Update rate: 20 ticks
+</ParamField>
+
+<ParamField path="TornadoEntity" type="EntityType">
+  **ID:** `elemental_wizards_rpg:tornado`
+  
+  **Properties:**
+  - Dimensions: 6.0F × 0.5F (width × height)
+  - Spawn group: MISC
+  - Fire immune
+  - Track range: 128 blocks
+  - Update rate: 20 ticks
+</ParamField>
+
+**Example:**
+```java
+// Register all entity types
+ElementalMod.registerEntities();
+
+// Access registered entity type
+EntityType<DripstoneBigEntity> dripstoneType = DripstoneBigEntity.ENTITY_TYPE;
+```
+
+## Initialization Order
+
+The recommended initialization order is:
+
+1. `init()` - Load configs and register spell impacts
+2. `registerEffects()` - Register status effects
+3. `registerItems()` - Register items and armor
+4. `registerEntities()` - Register entity types
+
+## See Also
+
+- [Spell System](/api/spell-system) - Spell registration and configuration
+- [Effects](/api/effects) - Status effect definitions

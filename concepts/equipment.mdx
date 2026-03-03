@@ -1,0 +1,567 @@
+---
+title: Equipment
+description: Comprehensive guide to armor sets, weapons, and spell books in Elemental Wizards
+---
+
+Equipment in Elemental Wizards directly impacts your spell power and effectiveness. From basic wands to epic robes, choosing the right gear is essential for any elemental wizard.
+
+## Armor Sets
+
+Armor sets provide spell power bonuses and unique secondary attributes. Each piece contributes to your overall power.
+
+### Armor Piece Bonus Distribution
+
+Armor bonuses are distributed across all four pieces (from `Armors.java:150-177`):
+
+- **Helmet**: 1 armor point
+- **Chestplate**: 3 armor points
+- **Leggings**: 2 armor points
+- **Boots**: 1 armor point
+
+Each piece provides **equal spell power bonuses** regardless of armor points.
+
+### Universal Elemental Armor
+
+**Elemental Armor Set** (Tier 1)
+
+The starting armor set for all elemental wizards:
+
+<Card title="Elemental Armor" icon="star">
+  - **Material**: Wool-based (1/3/2/1 protection)
+  - **Durability**: 10
+  - **Enchantability**: 9
+  - **Spell Power Bonus**: +20% per piece to ALL schools
+    - Water: +20% per piece
+    - Earth: +20% per piece
+    - Air: +20% per piece
+    - Fire: +20% per piece
+  - **Full Set Bonus**: +80% spell power to all schools
+</Card>
+
+<Info>
+  Elemental Armor is perfect for experimenting with multiple schools before specializing.
+</Info>
+
+### Water Armor Sets
+
+Water armor provides **Spell Power** and **Haste** bonuses:
+
+<AccordionGroup>
+  <Accordion title="Kelp Armor (Tier 2)" icon="droplet">
+    - **Material**: Kelp (1/3/2/1 protection)
+    - **Durability**: 20
+    - **Enchantability**: 10
+    - **Per Piece Bonuses**:
+      - Water Spell Power: +25%
+      - Haste: +2%
+    - **Full Set Bonuses**:
+      - Water Spell Power: +100%
+      - Haste: +8% (reduces all cooldowns and cast times)
+    - **Repair Material**: Wool
+  </Accordion>
+  
+  <Accordion title="Netherite Kelp Armor (Tier 3)" icon="droplet">
+    - **Material**: Netherite Kelp (1/3/2/1 protection)
+    - **Durability**: 30
+    - **Enchantability**: 15
+    - **Per Piece Bonuses**:
+      - Water Spell Power: +30%
+      - Haste: +3%
+    - **Full Set Bonuses**:
+      - Water Spell Power: +120%
+      - Haste: +12%
+    - **Repair Material**: Netherite Ingot
+  </Accordion>
+  
+  <Accordion title="Ocean Robe (Tier 5 - Epic)" icon="crown">
+    - **Material**: Epic Wizard Robe (1/3/2/1 protection)
+    - **Durability**: 40
+    - **Enchantability**: 18
+    - **Rarity**: Rare
+    - **Per Piece Bonuses**:
+      - Water Spell Power: +35%
+      - Haste: +3%
+    - **Full Set Bonuses**:
+      - Water Spell Power: +140%
+      - Haste: +12%
+    - **Equipment Set Passive**: `elemental_wizards_rpg:ocean`
+    - **Repair Material**: Netherite Ingot
+  </Accordion>
+</AccordionGroup>
+
+### Earth Armor Sets
+
+Earth armor provides **Spell Power** and **Critical Chance** bonuses:
+
+<AccordionGroup>
+  <Accordion title="Dripstone Armor (Tier 2)" icon="mountain">
+    - **Material**: Dripstone (1/3/2/1 protection)
+    - **Durability**: 20
+    - **Enchantability**: 10
+    - **Per Piece Bonuses**:
+      - Earth Spell Power: +25%
+      - Critical Chance: +2%
+    - **Full Set Bonuses**:
+      - Earth Spell Power: +100%
+      - Critical Chance: +8%
+    - **Repair Material**: Wool
+  </Accordion>
+  
+  <Accordion title="Netherite Dripstone Armor (Tier 3)" icon="mountain">
+    - **Material**: Netherite Dripstone (1/3/2/1 protection)
+    - **Durability**: 30
+    - **Enchantability**: 15
+    - **Per Piece Bonuses**:
+      - Earth Spell Power: +30%
+      - Critical Chance: +3%
+    - **Full Set Bonuses**:
+      - Earth Spell Power: +120%
+      - Critical Chance: +12%
+    - **Repair Material**: Netherite Ingot
+  </Accordion>
+  
+  <Accordion title="Mountain Robe (Tier 5 - Epic)" icon="crown">
+    - **Material**: Epic Wizard Robe (1/3/2/1 protection)
+    - **Durability**: 40
+    - **Enchantability**: 18
+    - **Rarity**: Rare
+    - **Per Piece Bonuses**:
+      - Earth Spell Power: +35%
+      - Critical Chance: +3%
+    - **Full Set Bonuses**:
+      - Earth Spell Power: +140%
+      - Critical Chance: +12%
+    - **Equipment Set Passive**: `elemental_wizards_rpg:mountain`
+    - **Repair Material**: Netherite Ingot
+  </Accordion>
+</AccordionGroup>
+
+### Air Armor Sets
+
+Air armor provides **Spell Power** and **Critical Damage** bonuses:
+
+<AccordionGroup>
+  <Accordion title="Wind Armor (Tier 2)" icon="wind">
+    - **Material**: Wind (1/3/2/1 protection)
+    - **Durability**: 20
+    - **Enchantability**: 10
+    - **Per Piece Bonuses**:
+      - Air Spell Power: +25%
+      - Critical Damage: +5%
+    - **Full Set Bonuses**:
+      - Air Spell Power: +100%
+      - Critical Damage: +20%
+    - **Repair Material**: Wool
+  </Accordion>
+  
+  <Accordion title="Netherite Wind Armor (Tier 3)" icon="wind">
+    - **Material**: Netherite Wind (1/3/2/1 protection)
+    - **Durability**: 30
+    - **Enchantability**: 15
+    - **Per Piece Bonuses**:
+      - Air Spell Power: +30%
+      - Critical Damage: +6%
+    - **Full Set Bonuses**:
+      - Air Spell Power: +120%
+      - Critical Damage: +24%
+    - **Repair Material**: Netherite Ingot
+  </Accordion>
+  
+  <Accordion title="Hurricane Robe (Tier 5 - Epic)" icon="crown">
+    - **Material**: Epic Wizard Robe (1/3/2/1 protection)
+    - **Durability**: 40
+    - **Enchantability**: 18
+    - **Rarity**: Rare
+    - **Per Piece Bonuses**:
+      - Air Spell Power: +35%
+      - Critical Damage: +8%
+    - **Full Set Bonuses**:
+      - Air Spell Power: +140%
+      - Critical Damage: +32%
+    - **Equipment Set Passive**: `elemental_wizards_rpg:hurricane`
+    - **Repair Material**: Netherite Ingot
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  All armor pieces have low physical protection (1/3/2/1) but high enchantability. Enchant your robes for additional benefits!
+</Tip>
+
+## Weapons
+
+Weapons come in two categories: **Wands** (one-handed) and **Staffs** (two-handed).
+
+### Wands
+
+Wands are one-handed weapons with moderate spell power bonuses:
+
+**Base Stats** (from `WeaponsRegister.java:57-58`):
+- Attack Damage: 2
+- Attack Speed: -2.4
+- Equipment Type: `DAMAGE_WAND`
+
+#### Water Wands
+
+<CardGroup cols={3}>
+  <Card title="Kelp Wand" icon="wand-magic">
+    **Tier 0**
+    
+    - Water Power: +3
+    - Material: Wood
+    - Repair: Stick
+  </Card>
+  <Card title="Aqua Wand" icon="wand-magic">
+    **Tier 2**
+    
+    - Water Power: +5
+    - Material: Iron
+    - Repair: Gold Ingot
+  </Card>
+  <Card title="Netherite Aqua Wand" icon="wand-magic">
+    **Tier 3**
+    
+    - Water Power: +5.5
+    - Material: Netherite
+    - Repair: Netherite Ingot
+  </Card>
+</CardGroup>
+
+#### Earth Wands
+
+<CardGroup cols={3}>
+  <Card title="Clay Wand" icon="wand-magic">
+    **Tier 0**
+    
+    - Earth Power: +3
+    - Material: Wood
+    - Repair: Stick
+  </Card>
+  <Card title="Terra Wand" icon="wand-magic">
+    **Tier 2**
+    
+    - Earth Power: +5
+    - Material: Iron
+    - Repair: Iron Ingot
+  </Card>
+  <Card title="Netherite Terra Wand" icon="wand-magic">
+    **Tier 3**
+    
+    - Earth Power: +5.5
+    - Material: Netherite
+    - Repair: Netherite Ingot
+  </Card>
+</CardGroup>
+
+#### Air Wands
+
+<CardGroup cols={3}>
+  <Card title="Feather Wand" icon="wand-magic">
+    **Tier 0**
+    
+    - Air Power: +3
+    - Material: Wood
+    - Repair: Stick
+  </Card>
+  <Card title="Wind Wand" icon="wand-magic">
+    **Tier 2**
+    
+    - Air Power: +5
+    - Material: Iron
+    - Repair: Iron Ingot
+  </Card>
+  <Card title="Netherite Wind Wand" icon="wand-magic">
+    **Tier 3**
+    
+    - Air Power: +5.5
+    - Material: Netherite
+    - Repair: Netherite Ingot
+  </Card>
+</CardGroup>
+
+### Staffs
+
+Staffs are two-handed weapons with higher spell power bonuses:
+
+**Base Stats** (from `WeaponsRegister.java:113-114`):
+- Attack Damage: 4
+- Attack Speed: -3.0
+- Equipment Type: `DAMAGE_STAFF`
+
+#### Universal Staffs
+
+<Card title="Elemental Staff" icon="staff">
+  **Tier 1**
+  
+  - Water Power: +5
+  - Earth Power: +5
+  - Air Power: +5
+  - Fire Power: +5
+  - Material: Diamond
+  - Repair: Stick
+  
+  Perfect for multi-school builds!
+</Card>
+
+#### Specialized Staffs
+
+<Tabs>
+  <Tab title="Water Staffs">
+    <CardGroup cols={2}>
+      <Card title="Aqua Staff">
+        **Tier 2**
+        
+        - Water Power: +6
+        - Material: Diamond
+        - Repair: Gold Ingot
+      </Card>
+      <Card title="Netherite Aqua Staff">
+        **Tier 3**
+        
+        - Water Power: +7
+        - Material: Netherite
+        - Repair: Netherite Ingot
+      </Card>
+    </CardGroup>
+  </Tab>
+  
+  <Tab title="Earth Staffs">
+    <CardGroup cols={2}>
+      <Card title="Terra Staff">
+        **Tier 2**
+        
+        - Earth Power: +6
+        - Material: Diamond
+        - Repair: Gold Ingot
+      </Card>
+      <Card title="Netherite Terra Staff">
+        **Tier 3**
+        
+        - Earth Power: +7
+        - Material: Netherite
+        - Repair: Netherite Ingot
+      </Card>
+    </CardGroup>
+  </Tab>
+  
+  <Tab title="Air Staffs">
+    <CardGroup cols={2}>
+      <Card title="Wind Staff">
+        **Tier 2**
+        
+        - Air Power: +6
+        - Material: Diamond
+        - Repair: Gold Ingot
+      </Card>
+      <Card title="Netherite Wind Staff">
+        **Tier 3**
+        
+        - Air Power: +7
+        - Material: Netherite
+        - Repair: Netherite Ingot
+      </Card>
+    </CardGroup>
+  </Tab>
+</Tabs>
+
+#### Tier 4 Staffs (Mod Integration)
+
+These staffs require specific mods to be installed:
+
+<AccordionGroup>
+  <Accordion title="Ruby Terra Staff" icon="gem">
+    **Tier 4** | Requires: Better Nether
+    
+    - Earth Power: +8
+    - Material: Netherite
+    - Repair: Nether Ruby (`betternether:nether_ruby`)
+  </Accordion>
+  
+  <Accordion title="Crystal Aqua Staff" icon="gem">
+    **Tier 4** | Requires: Better End
+    
+    - Water Power: +8
+    - Material: Netherite
+    - Repair: Aeternium Ingot (`betterend:aeternium_ingot`)
+  </Accordion>
+  
+  <Accordion title="Aeternium Wind Staff" icon="gem">
+    **Tier 4** | Requires: Better End
+    
+    - Air Power: +8
+    - Material: Netherite
+    - Repair: Aeternium Ingot (`betterend:aeternium_ingot`)
+  </Accordion>
+  
+  <Accordion title="Aether Staff" icon="cloud">
+    **Tier 4** | Requires: Aether
+    
+    - Water Power: +8
+    - Earth Power: +8
+    - Air Power: +8
+    - Material: Netherite
+    - Repair: Ambrosium Shard (`aether:ambrosium_shard`)
+  </Accordion>
+  
+  <Accordion title="Unique Staff 1" icon="star">
+    **Tier 5** | Requires: Arsenal | Rarity: Rare
+    
+    - Water Power: +8
+    - Earth Power: +8
+    - Air Power: +8
+    - **Built-in Spell**: Elemental Avatar
+    - Material: Netherite
+    - Repair: Iron Block
+    - Loot: Crystal tier
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+  Tier 4 and 5 staffs require their respective mods to be installed, or you can enable `ignore_items_required_mods` in the config.
+</Warning>
+
+## Spell Books
+
+Spell books grant access to school-specific spells. They are created and registered for each elemental school:
+
+### Available Spell Books (from `ElementalItems.java:41-43`)
+
+<CardGroup cols={3}>
+  <Card title="Aqua Spell Book" icon="book" color="#01d9cf">
+    Registry ID: `elemental_wizards_rpg:aqua`
+    
+    Contains all Water school spells
+  </Card>
+  <Card title="Terra Spell Book" icon="book" color="#bd8b00">
+    Registry ID: `elemental_wizards_rpg:terra`
+    
+    Contains all Earth school spells
+  </Card>
+  <Card title="Wind Spell Book" icon="book" color="#d5ebff">
+    Registry ID: `elemental_wizards_rpg:wind`
+    
+    Contains all Air school spells
+  </Card>
+</CardGroup>
+
+<Info>
+  Spell books are required to learn and cast spells from their respective schools.
+</Info>
+
+## How Equipment Interacts with Spell Power
+
+Your total spell power for a school is calculated by combining all bonuses:
+
+```
+Total Spell Power = Base + Weapon Bonus + Armor Bonuses
+```
+
+### Example Build: Water Wizard
+
+<Steps>
+  <Step title="Equip Netherite Aqua Staff">
+    +7 Water Spell Power
+  </Step>
+  <Step title="Equip Full Netherite Kelp Armor">
+    +120% Water Spell Power (30% × 4 pieces)
+  </Step>
+  <Step title="Equip Aqua Spell Book">
+    Access to all Water spells
+  </Step>
+  <Step title="Calculate Hydro Beam Damage">
+    - Base Spell Power: 7
+    - With Armor: 7 × 2.2 = 15.4
+    - Hydro Beam (1.1 coefficient): 15.4 × 1.1 = **16.94 damage**
+  </Step>
+</Steps>
+
+### Example Build: Critical Air Wizard
+
+<Steps>
+  <Step title="Equip Netherite Wind Staff">
+    +7 Air Spell Power
+  </Step>
+  <Step title="Equip Full Hurricane Robe">
+    - +140% Air Spell Power (35% × 4 pieces)
+    - +32% Critical Damage (8% × 4 pieces)
+  </Step>
+  <Step title="Calculate Critical Tornado Damage">
+    - Base: 7 × 2.4 = 16.8 Air Power
+    - Tornado (0.55 coefficient): 16.8 × 0.55 = 9.24 damage
+    - On Critical: 9.24 × 1.32 = **12.2 damage**
+  </Step>
+</Steps>
+
+<Tip>
+  Secondary stats (Haste, Crit Chance, Crit Damage) multiply your effectiveness beyond raw spell power!
+</Tip>
+
+## Equipment Progression Path
+
+Recommended progression for each school:
+
+<Tabs>
+  <Tab title="Water">
+    1. **Early Game**: Kelp Wand + Elemental Armor
+    2. **Mid Game**: Aqua Wand + Kelp Armor
+    3. **Late Game**: Aqua Staff + Netherite Kelp Armor
+    4. **End Game**: Netherite Aqua Staff + Ocean Robe
+  </Tab>
+  
+  <Tab title="Earth">
+    1. **Early Game**: Clay Wand + Elemental Armor
+    2. **Mid Game**: Terra Wand + Dripstone Armor
+    3. **Late Game**: Terra Staff + Netherite Dripstone Armor
+    4. **End Game**: Netherite Terra Staff + Mountain Robe
+  </Tab>
+  
+  <Tab title="Air">
+    1. **Early Game**: Feather Wand + Elemental Armor
+    2. **Mid Game**: Wind Wand + Wind Armor
+    3. **Late Game**: Wind Staff + Netherite Wind Armor
+    4. **End Game**: Netherite Wind Staff + Hurricane Robe
+  </Tab>
+</Tabs>
+
+## Special Equipment Properties
+
+### Equipment Set Passives
+
+Epic tier armor sets (Ocean, Mountain, Hurricane) have unique passive effects:
+
+```java
+// From Armors.java:363-365
+public static Identifier hurricane_passive = Identifier.of(MOD_ID, "hurricane");
+public static Identifier mountain_passive = Identifier.of(MOD_ID, "mountain");
+public static Identifier ocean_passive = Identifier.of(MOD_ID, "ocean");
+```
+
+<Warning>
+  The specific effects of these passives are configured separately. Check your mod's config files for details.
+</Warning>
+
+### Rarity and Item Settings
+
+All armor pieces use standardized settings (from `Armors.java:138-140`):
+
+```java
+itemSettings
+  .component(SpellDataComponents.EQUIPMENT_SET, equipmentSetId)
+  .component(DataComponentTypes.RARITY, Rarity.RARE);
+```
+
+All wizard equipment is marked as **Rare** quality.
+
+## Elemental Essence
+
+A special crafting material used in various recipes:
+
+```java
+// From ElementalItems.java:34
+public static final Item ELEMENTAL_ESSENCE = registerItem("elemental_essence", new Item(...));
+```
+
+Registry ID: `elemental_wizards_rpg:elemental_essence`
+
+<Info>
+  Elemental Essence is likely used in crafting higher-tier equipment and spell books.
+</Info>

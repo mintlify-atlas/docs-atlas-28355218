@@ -1,0 +1,290 @@
+---
+title: Status effects
+description: Complete guide to all status effects in Elemental Wizards, including buffs, debuffs, and their mechanics
+---
+
+Status effects are temporary conditions that modify your abilities or vulnerabilities. Understanding them is crucial for effective combat.
+
+## Water effects
+
+Water magic focuses on healing and crowd control through beneficial and tactical effects.
+
+### Cleansing Water
+
+<ParamField path="Type" type="Beneficial">
+  Applied by water healing spells
+</ParamField>
+
+<ParamField path="Color" type="#01d9cf">
+  Aqua blue particles
+</ParamField>
+
+**Effect**: Provides healing over time and cleanses negative effects.
+
+**How to apply**:
+- Cast water-based healing spells
+- Drink cleansing potions (if available)
+
+**Duration**: Varies by spell (typically 4-8 seconds)
+
+**Configuration**:
+- Synchronized effect (visible to all players)
+- No direct attribute modifiers
+
+<Tip>
+Cleansing Water is essential for support builds. Pair it with Bubble Beam for area healing.
+</Tip>
+
+### Bubble Foam
+
+<ParamField path="Type" type="Beneficial">
+  Applied by Bubble Beam spell
+</ParamField>
+
+<ParamField path="Color" type="#01d9cf">
+  Aqua blue bubbles
+</ParamField>
+
+**Effect**: Creates a protective foam barrier that pushes nearby enemies away continuously.
+
+**Mechanics**:
+- Range: 1.5 blocks radius
+- Repels entities at rate: `(target.position - caster.position) / 4`
+- Only affects enemies (allies are unaffected)
+- Updates every tick while active
+
+**How to apply**:
+- Cast Bubble Beam (Tier 2 water spell)
+- Self-buff only (applied to caster)
+
+**Duration**: 4 seconds base + amplifier scaling
+
+**Amplifier effects**:
+- Each level increases push strength by 20%
+- Amplifier calculated from spell power
+
+<Note>
+Bubble Foam is excellent for controlling space around you. Enemies cannot easily reach you while it's active.
+</Note>
+
+### Soaked
+
+<ParamField path="Type" type="Harmful">
+  Applied by water damage spells
+</ParamField>
+
+**Effect**: Makes targets vulnerable to lightning and frost damage.
+
+**Vulnerabilities** (from `EffectsConfig`):
+- Lightning damage: +15%
+- Lightning critical chance: +10%
+- Frost damage: +15%
+- Frost critical damage: +30%
+
+**How to apply**:
+- Hit enemies with water-based damage spells
+- Aqua Splash, Water Whip, and other offensive water spells
+
+**Synergies**:
+- Combo with frost mages (if other mods installed)
+- Increases damage from storm/lightning effects
+
+<Warning>
+Soaked cannot be applied to entities with the tag `more_rpg_classes:resistant_to_water_spells`.
+</Warning>
+
+## Earth effects
+
+Earth magic provides powerful defensive buffs and durability.
+
+### Stone Flesh
+
+<ParamField path="Type" type="Beneficial">
+  Applied by Stone Flesh spell
+</ParamField>
+
+<ParamField path="Color" type="#bd8b00">
+  Gold/bronze particles
+</ParamField>
+
+**Effect**: Hardens your skin like stone, granting armor and damage reduction.
+
+**Attribute modifiers**:
+- **Armor**: +1.0 (configurable via `stone_flesh_armor_increase`)
+- **Armor Toughness**: +0.5 (configurable via `stone_flesh_armor_toughness_increase`)
+
+**Special mechanics**:
+- At full HP: 50% damage reduction (configurable via `stone_flesh_full_hp_damage_reduction`)
+- Stacks with existing armor
+- Visible to all players (synchronized)
+
+**How to apply**:
+- Cast Stone Flesh spell (Tier 1 earth)
+- Duration: 16 seconds
+
+**Configuration values** (`EffectsConfig`):
+```java
+stone_flesh_armor_increase = 1.0F
+stone_flesh_armor_toughness_increase = 0.5F
+stone_flesh_full_hp_damage_reduction = 0.5F
+```
+
+<Tip>
+Stone Flesh is your primary defensive cooldown. Cast it before engaging tough enemies or when your health is high to maximize the damage reduction.
+</Tip>
+
+### Trembling (deprecated)
+
+<Note>
+This effect has been removed in recent versions and replaced with custom spell impacts from MRPGLib.
+</Note>
+
+## Air effects
+
+Air magic inflicts debuffs that control enemy movement and make them vulnerable.
+
+### Updraft
+
+<ParamField path="Type" type="Harmful">
+  Applied by Updraft spell
+</ParamField>
+
+<ParamField path="Color" type="#d5ebff">
+  Light blue wind particles
+</ParamField>
+
+**Effect**: Launches targets into the air and makes them extremely vulnerable to air damage.
+
+**Attribute modifiers**:
+- **Attack Speed**: -25% (configurable via `updraft_attack_speed_reduction`)
+
+**Air spell vulnerabilities**:
+- Air damage: +10%
+- Air critical chance: +10%
+- Air critical damage: +35%
+
+**How to apply**:
+- Cast Updraft spell (Tier 2 air)
+- Affects enemies in area
+
+**Configuration values** (`EffectsConfig`):
+```java
+updraft_attack_speed_reduction = -0.25F
+updraft_air_damage_vulnerability = 0.1F
+updraft_air_spell_crit_chance_vulnerability = 0.1F
+updraft_air_spell_crit_damage_vulnerability = 0.35F
+```
+
+**Immunity**:
+- Bosses (entities with tag `#c:bosses`) are immune
+
+<Tip>
+Updraft is a powerful setup spell. Cast it, then follow up with Air Cutter or Aeroblast for massive damage.
+</Tip>
+
+### Tornado
+
+<ParamField path="Type" type="Harmful">
+  Applied by Tornado entity
+</ParamField>
+
+<ParamField path="Color" type="#d5ebff">
+  Light blue swirling particles
+</ParamField>
+
+**Effect**: Traps targets in a tornado, preventing movement and making them vulnerable to fire.
+
+**Attribute modifiers**:
+- **Movement Speed**: -99% (effectively immobilized)
+
+**Fire spell vulnerability**:
+- Fire damage: +15%
+
+**How to apply**:
+- Cast Tornado spell (Tier 3 air)
+- Creates a Tornado entity that applies the effect
+
+**Configuration values** (`EffectsConfig`):
+```java
+tornado_fire_spell_vulnerability = 0.15F
+```
+
+**Immunity**:
+- Bosses (entities with tag `#c:bosses`) are immune to knockup effects
+
+<Warning>
+Tornado is one of the most powerful crowd control effects in the game. Use it wisely on high-value targets.
+</Warning>
+
+## Effect interactions
+
+Understanding how effects synergize can dramatically improve your combat effectiveness.
+
+### Cross-element combos
+
+**Water + Air**:
+- Soaked + Tornado = No direct synergy, but control + vulnerability is powerful
+- Bubble Foam + Updraft = Control enemy positioning while protected
+
+**Earth + Water**:
+- Stone Flesh + Cleansing Water = Maximum survivability
+- Tank builds benefit from this combination
+
+**Earth + Air**:
+- Stone Flesh + Updraft = Defensive buff while setting up burst damage
+- Tornado + Stone Flesh = Survive while enemies are disabled
+
+### Multi-element builds
+
+The Elemental Staff enables multi-element combos:
+
+1. **Balanced caster**: Rotate between defensive (Stone Flesh) and offensive spells
+2. **Crowd controller**: Use Tornado and Bubble Foam to control battlefield
+3. **Burst damage**: Stack Updraft → Air Cutter for maximum damage
+
+## Configuration
+
+All status effects can be customized via the `effects_v1.json` config file located in `.minecraft/config/elemental_wizards_rpg/`.
+
+**Configurable parameters**:
+
+```json
+{
+  "stone_flesh_armor_increase": 1.0,
+  "stone_flesh_armor_toughness_increase": 0.5,
+  "stone_flesh_full_hp_damage_reduction": 0.5,
+  "updraft_attack_speed_reduction": -0.25,
+  "updraft_air_damage_vulnerability": 0.1,
+  "updraft_air_spell_crit_chance_vulnerability": 0.1,
+  "updraft_air_spell_crit_damage_vulnerability": 0.35,
+  "tornado_fire_spell_vulnerability": 0.15,
+  "soaked_lightning_damage_vulnerability": 0.15,
+  "soaked_lightning_critical_chance_vulnerability": 0.1,
+  "soaked_frost_damage_vulnerability": 0.15,
+  "soaked_frost_crit_damage_vulnerability": 0.3
+}
+```
+
+See the [configuration guide](/guides/configuration) for details on editing these values.
+
+## Quick reference
+
+| Effect | Type | School | Key Benefit | Duration |
+|--------|------|--------|-------------|----------|
+| Cleansing Water | Beneficial | Water | Healing over time | 4-8s |
+| Bubble Foam | Beneficial | Water | Enemy repulsion | 4s+ |
+| Soaked | Harmful | Water | +15% lightning/frost damage | Varies |
+| Stone Flesh | Beneficial | Earth | +1 armor, 50% DR at full HP | 16s |
+| Updraft | Harmful | Air | +35% air crit damage | Varies |
+| Tornado | Harmful | Air | -99% movement speed | Varies |
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Spell guides" icon="wand-sparkles" href="/spells/overview">
+    Learn which spells apply which effects
+  </Card>
+  <Card title="Configuration" icon="gear" href="/guides/configuration">
+    Customize effect values
+  </Card>
+</CardGroup>

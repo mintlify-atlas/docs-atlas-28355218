@@ -1,0 +1,176 @@
+---
+title: Compatibility System
+description: Documentation for the Elemental Wizards mod compatibility system and integration with other mods
+---
+
+## Overview
+
+The compatibility system provides utilities for detecting and integrating with other mods, particularly the Armory RPG mod. It handles resource pack loading and conditional features based on mod presence.
+
+## WizardsCompat
+
+The `WizardsCompat` class manages built-in resource pack registration for compatibility features.
+
+### Package
+
+```java
+net.elemental_wizards_rpg.compat.WizardsCompat
+```
+
+### Methods
+
+#### registerCompat()
+
+```java
+public static void registerCompat()
+```
+
+Registers the built-in "wizard_changes" resource pack as an always-enabled resource pack.
+
+**Implementation:**
+```java
+FabricLoader.getInstance().getModContainer(MOD_ID).ifPresent(modContainer -> {
+    ResourceManagerHelper.registerBuiltinResourcePack(
+            Identifier.of(MOD_ID, "wizard_changes"),
+            modContainer,
+            ResourcePackActivationType.ALWAYS_ENABLED
+    );
+});
+```
+
+**Usage Example:**
+```java
+import net.elemental_wizards_rpg.compat.WizardsCompat;
+
+public class YourMod {
+    public void initialize() {
+        // Register compatibility resource packs
+        WizardsCompat.registerCompat();
+    }
+}
+```
+
+## CompatLoadingCheck
+
+The `CompatLoadingCheck` class provides utilities for detecting the presence of compatible mods.
+
+### Package
+
+```java
+net.elemental_wizards_rpg.compat.CompatLoadingCheck
+```
+
+### Methods
+
+#### armoryLoadCheck()
+
+```java
+public static boolean armoryLoadCheck()
+```
+
+Checks if the Armory RPG mod is loaded or if running in a development environment.
+
+**Returns:**
+- `true` if "armory_rpgs" mod is loaded or in development environment
+- `false` otherwise
+
+**Implementation:**
+```java
+return FabricLoader.getInstance().isModLoaded("armory_rpgs") 
+    | FabricLoader.getInstance().isDevelopmentEnvironment();
+```
+
+**Usage Example:**
+```java
+import static net.elemental_wizards_rpg.compat.CompatLoadingCheck.armoryLoadCheck;
+
+if (armoryLoadCheck()) {
+    // Enable armory-specific features
+    System.out.println("Armory RPG detected, enabling compatibility features");
+}
+```
+
+## Armory Integration
+
+The mod integrates with Armory RPG by conditionally loading a compatibility resource pack when Armory is detected.
+
+### Armory Compatibility Resource Pack
+
+When Armory RPG is detected, the mod automatically registers the "elemental_wizards_armory_compat" resource pack:
+
+```java
+import static net.elemental_wizards_rpg.compat.CompatLoadingCheck.armoryLoadCheck;
+
+if (armoryLoadCheck()) {
+    FabricLoader.getInstance().getModContainer(MOD_ID).ifPresent(modContainer -> {
+        ResourceManagerHelper.registerBuiltinResourcePack(
+                Identifier.of(MOD_ID, "elemental_wizards_armory_compat"),
+                modContainer,
+                ResourcePackActivationType.ALWAYS_ENABLED
+        );
+    });
+}
+```
+
+### Conditional Feature Loading
+
+The armory check is used throughout the mod to conditionally enable features:
+
+**In Item Registration:**
+```java
+import static net.elemental_wizards_rpg.compat.CompatLoadingCheck.armoryLoadCheck;
+
+public class Armors {
+    public static void register(Config.ArmorSet[] armorSets) {
+        // ... armor registration code ...
+        
+        if (armoryLoadCheck()) {
+            // Register armory-specific features for the armor
+        }
+    }
+}
+```
+
+**In Client Initialization:**
+```java
+import static net.elemental_wizards_rpg.compat.CompatLoadingCheck.armoryLoadCheck;
+
+public class ElementalClient {
+    public void onInitializeClient() {
+        if (armoryLoadCheck()) {
+            // Initialize armory-specific client features
+        }
+    }
+}
+```
+
+## Creating Custom Compatibility Checks
+
+You can extend the compatibility system for other mods by adding methods to `CompatLoadingCheck`:
+
+```java
+package net.elemental_wizards_rpg.compat;
+
+import net.fabricmc.loader.api.FabricLoader;
+
+public class CompatLoadingCheck {
+    public static boolean armoryLoadCheck() {
+        return FabricLoader.getInstance().isModLoaded("armory_rpgs") 
+            | FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+    
+    // Add your custom compatibility check
+    public static boolean yourModLoadCheck() {
+        return FabricLoader.getInstance().isModLoaded("your_mod_id") 
+            | FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+}
+```
+
+## Dependencies
+
+The compatibility system requires:
+- `net.fabricmc.fabric.api.resource.ResourceManagerHelper`
+- `net.fabricmc.fabric.api.resource.ResourcePackActivationType`
+- `net.fabricmc.loader.api.FabricLoader`
+- `net.minecraft.util.Identifier`

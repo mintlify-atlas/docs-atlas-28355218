@@ -1,0 +1,226 @@
+---
+title: Armor API
+description: API reference for the Armors class and armor set creation in Elemental Wizards
+---
+
+## Overview
+
+The `Armors` class manages all armor sets in the Elemental Wizards mod, providing methods for creating custom armor materials and registering complete armor sets with spell power bonuses.
+
+## Class: Armors
+
+**Package:** `net.elemental_wizards_rpg.item.armor`
+
+### Methods
+
+#### material()
+
+Creates and registers a custom armor material with specified protection values and properties.
+
+```java
+public static RegistryEntry<ArmorMaterial> material(
+    String name,
+    int protectionHead, 
+    int protectionChest, 
+    int protectionLegs, 
+    int protectionFeet,
+    int enchantability, 
+    RegistryEntry<SoundEvent> equipSound, 
+    Supplier<Ingredient> repairIngredient
+)
+```
+
+**Parameters:**
+- `name` - Identifier name for the armor material
+- `protectionHead` - Protection value for helmet
+- `protectionChest` - Protection value for chestplate
+- `protectionLegs` - Protection value for leggings
+- `protectionFeet` - Protection value for boots
+- `enchantability` - Enchantment value (higher = better enchantments)
+- `equipSound` - Sound event when equipping armor
+- `repairIngredient` - Ingredient supplier for repairing the armor
+
+**Returns:** `RegistryEntry<ArmorMaterial>` - The registered armor material
+
+**Example:**
+```java
+public static RegistryEntry<ArmorMaterial> material_elemental = material(
+    "elemental",
+    1, 3, 2, 1,
+    9,
+    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 
+    WOOL_INGREDIENTS
+);
+```
+
+#### register()
+
+Registers all armor sets with their configurations.
+
+```java
+public static void register(Map<String, ArmorSetConfig> configs)
+```
+
+**Parameters:**
+- `configs` - Map of armor set configurations
+
+## Armor Materials
+
+### Basic Materials
+
+| Material | Enchantability | Equip Sound | Repair Ingredient |
+|----------|----------------|-------------|-------------------|
+| `material_elemental` | 9 | Leather | Wool |
+| `material_kelp` | 10 | Leather | Wool |
+| `material_dripstone` | 10 | Leather | Wool |
+| `material_wind` | 10 | Leather | Wool |
+
+### Netherite Materials
+
+| Material | Enchantability | Equip Sound | Repair Ingredient |
+|----------|----------------|-------------|-------------------|
+| `material_netherite_kelp` | 15 | Netherite | Netherite Ingot |
+| `material_netherite_dripstone` | 15 | Netherite | Netherite Ingot |
+| `material_netherite_wind` | 15 | Netherite | Netherite Ingot |
+| `epic_wizard_robe` | 18 | Netherite | Netherite Ingot |
+
+## Armor Sets
+
+### Elemental Armor (Tier 1)
+
+**ID:** `elemental_wizards_rpg:elemental`
+
+**Bonuses per piece:**
+- Air Spell Power: +20%
+- Earth Spell Power: +20%
+- Water Spell Power: +20%
+- Fire Spell Power: +20%
+
+**Example:**
+```java
+public static final Armor.Set elementalArmor = create(
+    material_elemental,
+    Identifier.of(MOD_ID, "elemental"),
+    10,
+    ElementalRobe::new,
+    ArmorSetConfig.with(
+        new ArmorSetConfig.Piece(1)
+            .addAll(List.of(
+                AttributeModifier.multiply(MoreSpellSchools.AIR.id, 0.2F),
+                AttributeModifier.multiply(MoreSpellSchools.EARTH.id, 0.2F),
+                AttributeModifier.multiply(MoreSpellSchools.WATER.id, 0.2F),
+                AttributeModifier.multiply(SpellSchools.FIRE.id, 0.2F)
+            )),
+        // ... other pieces
+    ), 1, null
+).armorSet();
+```
+
+### Kelp Armor (Tier 2)
+
+**ID:** `elemental_wizards_rpg:kelp`
+
+**Bonuses per piece:**
+- Water Spell Power: +25%
+- Spell Haste: +2%
+
+### Dripstone Armor (Tier 2)
+
+**ID:** `elemental_wizards_rpg:dripstone`
+
+**Bonuses per piece:**
+- Earth Spell Power: +25%
+- Critical Chance: +2%
+
+### Wind Armor (Tier 2)
+
+**ID:** `elemental_wizards_rpg:wind`
+
+**Bonuses per piece:**
+- Air Spell Power: +25%
+- Critical Damage: +5%
+
+### Netherite Kelp Armor (Tier 3)
+
+**ID:** `elemental_wizards_rpg:netherite_kelp`
+
+**Bonuses per piece:**
+- Water Spell Power: +30%
+- Spell Haste: +3%
+
+### Netherite Dripstone Armor (Tier 3)
+
+**ID:** `elemental_wizards_rpg:netherite_dripstone`
+
+**Bonuses per piece:**
+- Earth Spell Power: +30%
+- Critical Chance: +3%
+
+### Netherite Wind Armor (Tier 3)
+
+**ID:** `elemental_wizards_rpg:netherite_wind`
+
+**Bonuses per piece:**
+- Air Spell Power: +30%
+- Critical Damage: +6%
+
+### Epic Armor Sets (Tier 5)
+
+#### Hurricane Robe
+**ID:** `elemental_wizards_rpg:hurricane_robe`
+- Air Spell Power: +35%
+- Critical Damage: +8%
+- Equipment Set Passive: `elemental_wizards_rpg:hurricane`
+
+#### Mountain Robe
+**ID:** `elemental_wizards_rpg:mountain_robe`
+- Earth Spell Power: +35%
+- Critical Chance: +3%
+- Equipment Set Passive: `elemental_wizards_rpg:mountain`
+
+#### Ocean Robe
+**ID:** `elemental_wizards_rpg:ocean_robe`
+- Water Spell Power: +35%
+- Spell Haste: +3%
+- Equipment Set Passive: `elemental_wizards_rpg:ocean`
+
+## Spell Power Tiers
+
+The mod uses predefined spell power tiers:
+
+```java
+private static final float spell_power_t1 = 0.2F;  // 20%
+private static final float spell_power_t2 = 0.25F; // 25%
+private static final float spell_power_t3 = 0.3F;  // 30%
+private static final float spell_power_t5 = 0.35F; // 35%
+```
+
+## Creating Custom Armor Sets
+
+To create a custom armor set:
+
+1. Define an armor material using `material()`
+2. Create armor set configuration with `ArmorSetConfig.with()`
+3. Add attribute modifiers for each piece
+4. Register using the `create()` method
+
+```java
+public static final Armor.Set customArmor = create(
+    customMaterial,
+    Identifier.of(MOD_ID, "custom"),
+    20,  // durability multiplier
+    ElementalRobe::new,
+    ArmorSetConfig.with(
+        new ArmorSetConfig.Piece(1)  // helmet
+            .add(AttributeModifier.multiply(SpellSchools.FIRE.id, 0.3F)),
+        new ArmorSetConfig.Piece(3)  // chestplate
+            .add(AttributeModifier.multiply(SpellSchools.FIRE.id, 0.3F)),
+        new ArmorSetConfig.Piece(2)  // leggings
+            .add(AttributeModifier.multiply(SpellSchools.FIRE.id, 0.3F)),
+        new ArmorSetConfig.Piece(1)  // boots
+            .add(AttributeModifier.multiply(SpellSchools.FIRE.id, 0.3F))
+    ),
+    2,  // tier
+    null
+).armorSet();
+```

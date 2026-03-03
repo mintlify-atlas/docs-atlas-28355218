@@ -1,0 +1,292 @@
+---
+title: Entities API
+description: API reference for custom entities in Elemental Wizards mod
+---
+
+## Overview
+
+The Elemental Wizards mod provides custom spell cloud entities that extend Minecraft's entity system. These entities are used to create visual and gameplay effects for elemental spells.
+
+## Entity Types
+
+All entities in this mod extend `SpellCloud` from the Spell Engine API, providing spell-based cloud effects with custom behaviors.
+
+## TornadoEntity
+
+**Package:** `net.elemental_wizards_rpg.entity`
+
+### Class Definition
+
+```java
+public class TornadoEntity extends SpellCloud {
+    public static EntityType<TornadoEntity> ENTITY_TYPE;
+
+    public TornadoEntity(EntityType<? extends SpellCloud> entityType, World world) {
+        super(entityType, world);
+    }
+}
+```
+
+### Description
+
+The `TornadoEntity` represents a tornado spell cloud effect. It inherits all standard spell cloud behaviors from the parent `SpellCloud` class.
+
+### Fields
+
+#### ENTITY_TYPE
+
+```java
+public static EntityType<TornadoEntity> ENTITY_TYPE;
+```
+
+Static reference to the registered entity type for tornado entities.
+
+### Constructor
+
+```java
+public TornadoEntity(EntityType<? extends SpellCloud> entityType, World world)
+```
+
+**Parameters:**
+- `entityType` - The entity type for this tornado entity
+- `world` - The world instance where the entity exists
+
+### Usage Example
+
+```java
+// Create a tornado entity in the world
+TornadoEntity tornado = new TornadoEntity(TornadoEntity.ENTITY_TYPE, world);
+tornado.setPosition(x, y, z);
+world.spawnEntity(tornado);
+```
+
+### Inherited Behavior
+
+As a `SpellCloud`, TornadoEntity inherits:
+- Area of effect damage
+- Particle effects
+- Collision detection
+- Lifetime management
+- Spell power scaling
+
+## DripstoneBigEntity
+
+**Package:** `net.elemental_wizards_rpg.entity`
+
+### Class Definition
+
+```java
+public class DripstoneBigEntity extends SpellCloud {
+    public static EntityType<DripstoneBigEntity> ENTITY_TYPE;
+
+    public DripstoneBigEntity(EntityType<? extends SpellCloud> entityType, World world) {
+        super(entityType, world);
+    }
+
+    @Override
+    public boolean canBeHitByProjectile() {
+        return this.isAlive();
+    }
+}
+```
+
+### Description
+
+The `DripstoneBigEntity` represents a large dripstone spell cloud effect. Unlike the base `SpellCloud`, it can be destroyed by projectiles while alive.
+
+### Fields
+
+#### ENTITY_TYPE
+
+```java
+public static EntityType<DripstoneBigEntity> ENTITY_TYPE;
+```
+
+Static reference to the registered entity type for big dripstone entities.
+
+### Constructor
+
+```java
+public DripstoneBigEntity(EntityType<? extends SpellCloud> entityType, World world)
+```
+
+**Parameters:**
+- `entityType` - The entity type for this dripstone entity
+- `world` - The world instance where the entity exists
+
+### Methods
+
+#### canBeHitByProjectile()
+
+```java
+@Override
+public boolean canBeHitByProjectile()
+```
+
+Determines whether the entity can be hit by projectiles.
+
+**Returns:** `boolean` - `true` if the entity is alive, `false` otherwise
+
+**Behavior:** This override allows the dripstone to be destroyed by arrows, tridents, and other projectiles when the entity is still active.
+
+### Usage Example
+
+```java
+// Create a big dripstone entity
+DripstoneBigEntity dripstone = new DripstoneBigEntity(
+    DripstoneBigEntity.ENTITY_TYPE, 
+    world
+);
+dripstone.setPosition(x, y, z);
+world.spawnEntity(dripstone);
+
+// Check if it can be hit
+if (dripstone.canBeHitByProjectile()) {
+    // Entity can be destroyed by projectiles
+}
+```
+
+## DripstoneSmallEntity
+
+**Package:** `net.elemental_wizards_rpg.entity`
+
+### Class Definition
+
+```java
+public class DripstoneSmallEntity extends SpellCloud {
+    public static EntityType<DripstoneSmallEntity> ENTITY_TYPE;
+
+    public DripstoneSmallEntity(EntityType<? extends SpellCloud> entityType, World world) {
+        super(entityType, world);
+    }
+}
+```
+
+### Description
+
+The `DripstoneSmallEntity` represents a small dripstone spell cloud effect. It behaves identically to the base `SpellCloud` without custom modifications.
+
+### Fields
+
+#### ENTITY_TYPE
+
+```java
+public static EntityType<DripstoneSmallEntity> ENTITY_TYPE;
+```
+
+Static reference to the registered entity type for small dripstone entities.
+
+### Constructor
+
+```java
+public DripstoneSmallEntity(EntityType<? extends SpellCloud> entityType, World world)
+```
+
+**Parameters:**
+- `entityType` - The entity type for this small dripstone entity
+- `world` - The world instance where the entity exists
+
+### Usage Example
+
+```java
+// Create a small dripstone entity
+DripstoneSmallEntity smallDripstone = new DripstoneSmallEntity(
+    DripstoneSmallEntity.ENTITY_TYPE, 
+    world
+);
+smallDripstone.setPosition(x, y, z);
+world.spawnEntity(smallDripstone);
+```
+
+### Inherited Behavior
+
+As a `SpellCloud`, DripstoneSmallEntity inherits:
+- Standard spell cloud rendering
+- Damage area effects
+- Automatic despawning after duration
+- Particle effects
+
+## Entity Comparison
+
+| Entity | Projectile Vulnerable | Size | Special Features |
+|--------|----------------------|------|------------------|
+| `TornadoEntity` | No | - | Standard spell cloud |
+| `DripstoneBigEntity` | Yes | Large | Can be destroyed by projectiles |
+| `DripstoneSmallEntity` | No | Small | Standard spell cloud |
+
+## Common Use Cases
+
+### Spawning an Entity in a Spell
+
+```java
+public void castTornadoSpell(World world, Vec3d position) {
+    TornadoEntity tornado = new TornadoEntity(TornadoEntity.ENTITY_TYPE, world);
+    tornado.setPosition(position.x, position.y, position.z);
+    world.spawnEntity(tornado);
+}
+```
+
+### Creating a Projectile-Destructible Spell Effect
+
+```java
+public void createDripstone(World world, BlockPos pos) {
+    DripstoneBigEntity dripstone = new DripstoneBigEntity(
+        DripstoneBigEntity.ENTITY_TYPE,
+        world
+    );
+    dripstone.setPosition(pos.getX(), pos.getY(), pos.getZ());
+    
+    // Entity can now be destroyed by arrows
+    world.spawnEntity(dripstone);
+}
+```
+
+### Spawning Multiple Small Effects
+
+```java
+public void createDripstoneRain(World world, Vec3d center, int count) {
+    for (int i = 0; i < count; i++) {
+        DripstoneSmallEntity small = new DripstoneSmallEntity(
+            DripstoneSmallEntity.ENTITY_TYPE,
+            world
+        );
+        
+        // Randomize positions around center
+        double offsetX = (world.random.nextDouble() - 0.5) * 5;
+        double offsetZ = (world.random.nextDouble() - 0.5) * 5;
+        
+        small.setPosition(
+            center.x + offsetX,
+            center.y,
+            center.z + offsetZ
+        );
+        
+        world.spawnEntity(small);
+    }
+}
+```
+
+## Integration with Spell Engine
+
+All entities extend `net.spell_engine.entity.SpellCloud`, which provides:
+
+- **Spell Power Integration**: Entities scale damage with player spell power
+- **School Compatibility**: Works with elemental spell schools (Fire, Water, Earth, Air)
+- **Particle Systems**: Automatic particle rendering
+- **Area Damage**: Built-in area-of-effect damage calculations
+- **Duration Management**: Automatic cleanup after spell duration expires
+
+## Entity Registration
+
+Entity types are registered statically and must be initialized during mod setup. The `ENTITY_TYPE` fields are populated during the mod's entity registration phase.
+
+```java
+// Example registration (typically in mod initializer)
+TornadoEntity.ENTITY_TYPE = Registry.register(
+    Registries.ENTITY_TYPE,
+    Identifier.of(MOD_ID, "tornado"),
+    FabricEntityTypeBuilder.create(SpawnGroup.MISC, TornadoEntity::new)
+        .dimensions(EntityDimensions.fixed(1.0f, 1.0f))
+        .build()
+);
+```
